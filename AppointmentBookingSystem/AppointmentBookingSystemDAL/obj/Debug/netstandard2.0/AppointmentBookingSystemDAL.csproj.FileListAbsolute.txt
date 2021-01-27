@@ -1,0 +1,9 @@
+C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystemDAL\bin\Debug\netstandard2.0\AppointmentBookingSystemDAL.deps.json
+C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystemDAL\bin\Debug\netstandard2.0\AppointmentBookingSystemDAL.dll
+C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystemDAL\bin\Debug\netstandard2.0\AppointmentBookingSystemDAL.pdb
+C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystemDAL\obj\Debug\netstandard2.0\AppointmentBookingSystemDAL.csprojAssemblyReference.cache
+C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystemDAL\obj\Debug\netstandard2.0\AppointmentBookingSystemDAL.AssemblyInfoInputs.cache
+C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystemDAL\obj\Debug\netstandard2.0\AppointmentBookingSystemDAL.AssemblyInfo.cs
+C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystemDAL\obj\Debug\netstandard2.0\AppointmentBookingSystemDAL.csproj.CoreCompileInputs.cache
+C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystemDAL\obj\Debug\netstandard2.0\AppointmentBookingSystemDAL.dll
+C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystemDAL\obj\Debug\netstandard2.0\AppointmentBookingSystemDAL.pdb

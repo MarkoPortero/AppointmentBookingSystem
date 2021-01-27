@@ -75,8 +75,36 @@ using AppointmentBookingSystem.Shared;
 #line default
 #line hidden
 #nullable disable
-    [Microsoft.AspNetCore.Components.RouteAttribute("/counter")]
-    public partial class Counter : Microsoft.AspNetCore.Components.ComponentBase
+#nullable restore
+#line 3 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\Patient.razor"
+using AppointmentBookingSystemDAL;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 4 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\Patient.razor"
+using AppointmentBookingSystemDAL.Models;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 5 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\Patient.razor"
+using AppointmentBookingSystem.Models;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 6 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\Patient.razor"
+using Microsoft.AspNetCore.Mvc.TagHelpers.Cache;
+
+#line default
+#line hidden
+#nullable disable
+    [Microsoft.AspNetCore.Components.RouteAttribute("/Patients")]
+    public partial class Patient : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
         protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder)
@@ -84,18 +112,37 @@ using AppointmentBookingSystem.Shared;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 9 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\Counter.razor"
+#line 79 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\Patient.razor"
        
-    private int currentCount = 0;
-
-    private void IncrementCount()
+    private List<PatientModel> _patients;
+    private PatientAddModel _patientAddModel = new PatientAddModel();
+    protected override async Task OnInitializedAsync()
     {
-        currentCount++;
+        _patients = await Database.GetPatients();
+    }
+
+    private async Task InsertPatient()
+    {
+        PatientModel patient = new PatientModel()
+        {
+            FirstName = _patientAddModel.FirstName,
+            LastName = _patientAddModel.LastName,
+            Address = _patientAddModel.Address,
+            ContactNumber = _patientAddModel.ContactNumber,
+            Email = _patientAddModel.Email,
+            DateOfBirth = _patientAddModel.DateOfBirth.Date
+        };
+
+        await Database.InsertPatient(patient);
+        _patients.Add(patient);
+        //wipe out patient model
+        _patientAddModel = new PatientAddModel();
     }
 
 #line default
 #line hidden
 #nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IPatientData Database { get; set; }
     }
 }
 #pragma warning restore 1591

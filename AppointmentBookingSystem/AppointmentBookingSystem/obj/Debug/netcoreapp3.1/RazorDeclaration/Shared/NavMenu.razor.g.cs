@@ -83,7 +83,7 @@ using AppointmentBookingSystem.Shared;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 28 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Shared\NavMenu.razor"
+#line 23 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Shared\NavMenu.razor"
        
     private bool collapseNavMenu = true;
 

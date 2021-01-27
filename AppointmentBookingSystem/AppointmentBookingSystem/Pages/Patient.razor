@@ -1,0 +1,104 @@
+﻿@page "/Patients"
+
+@using AppointmentBookingSystemDAL
+@using AppointmentBookingSystemDAL.Models
+@using AppointmentBookingSystem.Models
+@using Microsoft.AspNetCore.Mvc.TagHelpers.Cache
+
+@inject IPatientData Database
+
+<h1>Patient</h1>
+
+<h4>Insert new patient</h4>
+<EditForm Model="_patientAddModel" OnValidSubmit="@InsertPatient">
+
+    <DataAnnotationsValidator/>
+    <ValidationSummary/>
+    <div class="form-group">
+        <label class="col-sm-2 col-form-label">First Name</label>
+        <InputText id="firstName" @bind-Value="_patientAddModel.FirstName"/>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 col-form-label">Last Name</label>
+        <InputText id="lastName" @bind-Value="_patientAddModel.LastName"/>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 col-form-label">Address</label>
+        <InputText id="address" @bind-Value="_patientAddModel.Address"/>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 col-form-label">Contact Number</label>
+        <InputText id="contactNumber" @bind-Value="_patientAddModel.ContactNumber"/>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 col-form-label">Email Address</label>
+        <InputText id="emailAddress" @bind-Value="_patientAddModel.Email"/>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 col-form-label">Date of Birth</label>
+        <InputDate id="dateOfBirth" @bind-Value="_patientAddModel.DateOfBirth"/>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create Patient</button>
+</EditForm>
+
+<h4 class="p-3">Current Patients</h4>
+@if (_patients is null)
+{
+    <p><em>Loading Patients...</em></p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Address</th>
+                <th>Contact Number</th>
+                <th>Email Address</th>
+                <th>Date of Birth</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var patient in _patients)
+            {
+                <tr>
+                    <td>@patient.FirstName</td>
+                    <td>@patient.LastName</td>
+                    <td>@patient.Address</td>
+                    <td>@patient.ContactNumber</td>
+                    <td>@patient.Email</td>
+                    <td>@patient.DateOfBirth.ToString("dd/MM/yyyy")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<PatientModel> _patients;
+    private PatientAddModel _patientAddModel = new PatientAddModel();
+    protected override async Task OnInitializedAsync()
+    {
+        _patients = await Database.GetPatients();
+    }
+
+    private async Task InsertPatient()
+    {
+        PatientModel patient = new PatientModel()
+        {
+            FirstName = _patientAddModel.FirstName,
+            LastName = _patientAddModel.LastName,
+            Address = _patientAddModel.Address,
+            ContactNumber = _patientAddModel.ContactNumber,
+            Email = _patientAddModel.Email,
+            DateOfBirth = _patientAddModel.DateOfBirth.Date
+        };
+
+        await Database.InsertPatient(patient);
+        _patients.Add(patient);
+        //wipe out patient model
+        _patientAddModel = new PatientAddModel();
+    }
+}
