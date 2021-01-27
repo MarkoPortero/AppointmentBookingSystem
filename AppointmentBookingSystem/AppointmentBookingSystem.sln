@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30907.101
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppointmentBookingSystem", "AppointmentBookingSystem\AppointmentBookingSystem.csproj", "{934959A5-22E8-42AB-AF58-67BE4032F00D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppointmentBookingSystemDAL", "AppointmentBookingSystemDAL\AppointmentBookingSystemDAL.csproj", "{D6E68B74-B0D7-4B0E-B588-39ED0AAFF60B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{934959A5-22E8-42AB-AF58-67BE4032F00D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{934959A5-22E8-42AB-AF58-67BE4032F00D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{934959A5-22E8-42AB-AF58-67BE4032F00D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{934959A5-22E8-42AB-AF58-67BE4032F00D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6E68B74-B0D7-4B0E-B588-39ED0AAFF60B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6E68B74-B0D7-4B0E-B588-39ED0AAFF60B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6E68B74-B0D7-4B0E-B588-39ED0AAFF60B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6E68B74-B0D7-4B0E-B588-39ED0AAFF60B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {14C49DE0-BD67-4A8D-87EE-DB18D3ECBF48}
+	EndGlobalSection
+EndGlobal
