@@ -12,7 +12,7 @@
     {
         private readonly IConfiguration _configuration;
 
-        public string ConnectionStringName { get; set; } = "connString";
+        public string ConnectionString { get; set; } = "connString";
 
         // configuration is injected from front end
         public SqlDataAccess(IConfiguration configuration)
@@ -25,7 +25,7 @@
         // Returns generic List
         public async Task<List<T>> LoadData<T, U>(string sql, U parameters)
         {
-            string connectionString = _configuration.GetConnectionString(ConnectionStringName);
+            string connectionString = _configuration.GetConnectionString(ConnectionString);
 
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
@@ -37,7 +37,7 @@
 
         public async Task SaveData<T>(string sql, T parameters)
         {
-            string connectionString = _configuration.GetConnectionString(ConnectionStringName);
+            string connectionString = _configuration.GetConnectionString(ConnectionString);
 
             using (IDbConnection connection = new SqlConnection(connectionString))
             {

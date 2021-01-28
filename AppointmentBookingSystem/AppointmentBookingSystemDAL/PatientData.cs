@@ -31,10 +31,28 @@ namespace AppointmentBookingSystemDAL
             return _dataAccess.LoadData<PatientModel, dynamic>(query, new {firstName, lastName, dateOfBirth});
         }
 
+        public Task DeletePatient(int patientId)
+        {
+            var query = @"DELETE 
+                          FROM MedPractice.patient 
+                          WHERE ID = @patientId";
+
+            return _dataAccess.SaveData(query, patientId);
+        }
+
+        public Task UpdatePatient(PatientModel patient, int patientId)
+        {
+            var query = @"UPDATE MedPractice.patient
+                          SET FirstName=@FirstName, LastName=@LastName, Address=@Address, ContactNumber=@ContactNumber, email=@Email, dateOfBirth=@dateOfBirth
+                          WHERE ID = @patientId";
+            return _dataAccess.SaveData(query, new{patient, patientId});
+
+        }
+
         public Task InsertPatient(PatientModel patient)
         {
             var query = @"INSERT INTO MedPractice.patient (FirstName, LastName, Address, ContactNumber, email, dateOfBirth)
-                             VALUES (@FirstName, @LastName, @Address, @ContactNumber, @Email, @dateOfBirth);";
+                          VALUES (@FirstName, @LastName, @Address, @ContactNumber, @Email, @dateOfBirth);";
 
             return _dataAccess.SaveData(query, patient);
         }
