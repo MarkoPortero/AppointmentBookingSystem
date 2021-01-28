@@ -112,7 +112,7 @@ using Microsoft.AspNetCore.Mvc.TagHelpers.Cache;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 79 "C:\work\privaterepo\AppointmentBookingSystem\AppointmentBookingSystem\AppointmentBookingSystem\Pages\Patient.razor"
+#line 78 "C:\work\privaterepo\AppointmentBookingSystem\AppointmentBookingSystem\AppointmentBookingSystem\Pages\Patient.razor"
        
     private List<PatientModel> _patients;
     private PatientAddModel _patientAddModel = new PatientAddModel();

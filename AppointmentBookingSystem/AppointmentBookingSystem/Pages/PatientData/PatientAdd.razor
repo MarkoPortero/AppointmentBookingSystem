@@ -1,0 +1,61 @@
+﻿@page "/PatientData/PatientAdd"
+
+@using AppointmentBookingSystem.Models
+@using AppointmentBookingSystemDAL
+@using AppointmentBookingSystemDAL.Models
+@using Microsoft.AspNetCore.Mvc.TagHelpers.Cache
+@inject IPatientData Database
+<h1>Patient</h1>
+
+<h4>Insert new patient</h4>
+<EditForm Model="_patientAddModel" OnValidSubmit="@InsertPatient">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="form-group">
+        <label class="col-sm-2 col-form-label">First Name</label>
+        <InputText id="firstName" @bind-Value="_patientAddModel.FirstName" />
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 col-form-label">Last Name</label>
+        <InputText id="lastName" @bind-Value="_patientAddModel.LastName" />
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 col-form-label">Address</label>
+        <InputText id="address" @bind-Value="_patientAddModel.Address" />
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 col-form-label">Contact Number</label>
+        <InputText id="contactNumber" @bind-Value="_patientAddModel.ContactNumber" />
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 col-form-label">Email Address</label>
+        <InputText id="emailAddress" @bind-Value="_patientAddModel.Email" />
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 col-form-label">Date of Birth</label>
+        <InputDate id="dateOfBirth" @bind-Value="_patientAddModel.DateOfBirth" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create Patient</button>
+</EditForm>
+
+@code {
+    private PatientAddModel _patientAddModel = new PatientAddModel();
+
+    private async Task InsertPatient()
+    {
+        PatientModel patient = new PatientModel()
+        {
+            FirstName = _patientAddModel.FirstName,
+            LastName = _patientAddModel.LastName,
+            Address = _patientAddModel.Address,
+            ContactNumber = _patientAddModel.ContactNumber,
+            Email = _patientAddModel.Email,
+            DateOfBirth = _patientAddModel.DateOfBirth.Date
+        };
+
+        await Database.InsertPatient(patient);
+        //wipe out patient model
+        _patientAddModel = new PatientAddModel();
+    }
+}
