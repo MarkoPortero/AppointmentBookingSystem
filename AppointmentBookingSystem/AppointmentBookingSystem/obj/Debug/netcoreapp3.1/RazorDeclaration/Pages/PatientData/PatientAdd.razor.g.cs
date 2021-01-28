@@ -76,29 +76,22 @@ using AppointmentBookingSystem.Shared;
 #line hidden
 #nullable disable
 #nullable restore
-#line 2 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\PatientData\PatientAdd.razor"
-using AppointmentBookingSystem.Models;
-
-#line default
-#line hidden
-#nullable disable
-#nullable restore
-#line 3 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\PatientData\PatientAdd.razor"
-using AppointmentBookingSystemDAL;
-
-#line default
-#line hidden
-#nullable disable
-#nullable restore
-#line 4 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\PatientData\PatientAdd.razor"
+#line 10 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\_Imports.razor"
 using AppointmentBookingSystemDAL.DataAccess;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 5 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\PatientData\PatientAdd.razor"
+#line 11 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\_Imports.razor"
 using AppointmentBookingSystemDAL.Models;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 12 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\_Imports.razor"
+using AppointmentBookingSystem.Models;
 
 #line default
 #line hidden
@@ -112,7 +105,7 @@ using AppointmentBookingSystemDAL.Models;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 44 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\PatientData\PatientAdd.razor"
+#line 40 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\PatientData\PatientAdd.razor"
        
     private PatientAddModel _patientAddModel = new PatientAddModel();
 

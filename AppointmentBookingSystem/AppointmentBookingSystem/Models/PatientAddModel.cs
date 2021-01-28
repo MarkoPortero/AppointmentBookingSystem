@@ -1,6 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-
-namespace AppointmentBookingSystem.Models
+﻿namespace AppointmentBookingSystem.Models
 {
     using System;
     using System.ComponentModel.DataAnnotations;

@@ -75,64 +75,13 @@ using AppointmentBookingSystem.Shared;
 #line default
 #line hidden
 #nullable disable
-#nullable restore
-#line 10 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\_Imports.razor"
-using AppointmentBookingSystemDAL.DataAccess;
-
-#line default
-#line hidden
-#nullable disable
-#nullable restore
-#line 11 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\_Imports.razor"
-using AppointmentBookingSystemDAL.Models;
-
-#line default
-#line hidden
-#nullable disable
-#nullable restore
-#line 12 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\_Imports.razor"
-using AppointmentBookingSystem.Models;
-
-#line default
-#line hidden
-#nullable disable
-    [Microsoft.AspNetCore.Components.RouteAttribute("/Patients")]
-    public partial class Patient : Microsoft.AspNetCore.Components.ComponentBase
+    public partial class PatientBase : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
         protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder)
         {
         }
         #pragma warning restore 1998
-#nullable restore
-#line 51 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\PatientData\Patient.razor"
-       
-    private List<PatientModel> _patients;
-    protected override async Task OnInitializedAsync()
-    {
-        _patients = await Database.GetPatients();
-    }
-
-    private async Task DeletePatient(PatientModel patient)
-    {
-        if(!await JsRuntime.InvokeAsync<bool>("confirm", $"Are you sure you want to delete the patient '{patient.FirstName} {patient.LastName}'?"))
-            return;
-        await Database.DeletePatient(patient.ID);
-
-        _patients.Remove(patient);
-    }
-
-    private void EditPatient(int patientId)
-    {
-        NavigationManager.NavigateTo($"/PatientData/PatientEdit/{patientId}");
-    }
-
-#line default
-#line hidden
-#nullable disable
-        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IJSRuntime JsRuntime { get; set; }
-        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IPatientData Database { get; set; }
-        [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager NavigationManager { get; set; }
     }
 }
 #pragma warning restore 1591
