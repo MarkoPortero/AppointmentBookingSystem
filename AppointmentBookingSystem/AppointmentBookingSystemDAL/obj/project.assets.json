@@ -1099,19 +1099,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\mark.porter\\.nuget\\packages\\": {}
+    "C:\\Users\\MarkP\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\work\\privaterepo\\AppointmentBookingSystem\\AppointmentBookingSystem\\AppointmentBookingSystemDAL\\AppointmentBookingSystemDAL.csproj",
+      "projectUniqueName": "C:\\Users\\MarkP\\source\\repos\\AppointmentBookingSystem\\AppointmentBookingSystemDAL\\AppointmentBookingSystemDAL.csproj",
       "projectName": "AppointmentBookingSystemDAL",
-      "projectPath": "C:\\work\\privaterepo\\AppointmentBookingSystem\\AppointmentBookingSystem\\AppointmentBookingSystemDAL\\AppointmentBookingSystemDAL.csproj",
-      "packagesPath": "C:\\Users\\mark.porter\\.nuget\\packages\\",
-      "outputPath": "C:\\work\\privaterepo\\AppointmentBookingSystem\\AppointmentBookingSystem\\AppointmentBookingSystemDAL\\obj\\",
+      "projectPath": "C:\\Users\\MarkP\\source\\repos\\AppointmentBookingSystem\\AppointmentBookingSystemDAL\\AppointmentBookingSystemDAL.csproj",
+      "packagesPath": "C:\\Users\\MarkP\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\MarkP\\source\\repos\\AppointmentBookingSystem\\AppointmentBookingSystemDAL\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\mark.porter\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\MarkP\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -1119,7 +1119,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "https://www.nuget.org/api/v2/": {}
+        "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "netstandard2.0": {

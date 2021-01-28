@@ -9,10 +9,6 @@ C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\bi
 C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\bin\Debug\netcoreapp3.1\AppointmentBookingSystem.Views.dll
 C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\bin\Debug\netcoreapp3.1\AppointmentBookingSystem.Views.pdb
 C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\bin\Debug\netcoreapp3.1\Dapper.dll
-C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\bin\Debug\netcoreapp3.1\runtimes\win7-x64\native\sni.dll
-C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\bin\Debug\netcoreapp3.1\runtimes\win7-x86\native\sni.dll
-C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netstandard1.3\System.Data.SqlClient.dll
-C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard1.3\System.Data.SqlClient.dll
 C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\bin\Debug\netcoreapp3.1\AppointmentBookingSystemDAL.dll
 C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\bin\Debug\netcoreapp3.1\AppointmentBookingSystemDAL.pdb
 C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\obj\Debug\netcoreapp3.1\AppointmentBookingSystem.csprojAssemblyReference.cache
@@ -23,7 +19,6 @@ C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\ob
 C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\obj\Debug\netcoreapp3.1\AppointmentBookingSystem.RazorComponent.input.cache
 C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\obj\Debug\netcoreapp3.1\RazorDeclaration\App.razor.g.cs
 C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\Index.razor.g.cs
-C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\Patient.razor.g.cs
 C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\obj\Debug\netcoreapp3.1\RazorDeclaration\Shared\MainLayout.razor.g.cs
 C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\obj\Debug\netcoreapp3.1\RazorDeclaration\Shared\NavMenu.razor.g.cs
 C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\obj\Debug\netcoreapp3.1\RazorDeclaration\Shared\SurveyPrompt.razor.g.cs
@@ -35,7 +30,6 @@ C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\ob
 C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\obj\Debug\netcoreapp3.1\AppointmentBookingSystem.RazorCoreGenerate.cache
 C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\obj\Debug\netcoreapp3.1\Razor\App.razor.g.cs
 C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\obj\Debug\netcoreapp3.1\Razor\Pages\Index.razor.g.cs
-C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\obj\Debug\netcoreapp3.1\Razor\Pages\Patient.razor.g.cs
 C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\obj\Debug\netcoreapp3.1\Razor\Shared\MainLayout.razor.g.cs
 C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\obj\Debug\netcoreapp3.1\Razor\Shared\NavMenu.razor.g.cs
 C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\obj\Debug\netcoreapp3.1\Razor\Shared\SurveyPrompt.razor.g.cs
@@ -112,3 +106,17 @@ C:\work\privaterepo\AppointmentBookingSystem\AppointmentBookingSystem\Appointmen
 C:\work\privaterepo\AppointmentBookingSystem\AppointmentBookingSystem\AppointmentBookingSystem\obj\Debug\netcoreapp3.1\AppointmentBookingSystem.dll
 C:\work\privaterepo\AppointmentBookingSystem\AppointmentBookingSystem\AppointmentBookingSystem\obj\Debug\netcoreapp3.1\AppointmentBookingSystem.pdb
 C:\work\privaterepo\AppointmentBookingSystem\AppointmentBookingSystem\AppointmentBookingSystem\obj\Debug\netcoreapp3.1\AppointmentBookingSystem.genruntimeconfig.cache
+C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Configuration.Abstractions.dll
+C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Primitives.dll
+C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\bin\Debug\netcoreapp3.1\System.Data.SqlClient.dll
+C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\bin\Debug\netcoreapp3.1\runtimes\win-arm64\native\sni.dll
+C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\bin\Debug\netcoreapp3.1\runtimes\win-x64\native\sni.dll
+C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\bin\Debug\netcoreapp3.1\runtimes\win-x86\native\sni.dll
+C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
+C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
+C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\PatientData\Patient.razor.g.cs
+C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\PatientData\PatientAdd.razor.g.cs
+C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\obj\Debug\netcoreapp3.1\Razor\Pages\PatientData\Patient.razor.g.cs
+C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\obj\Debug\netcoreapp3.1\Razor\Pages\PatientData\PatientAdd.razor.g.cs
+C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\PatientData\PatientEdit.razor.g.cs
+C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\obj\Debug\netcoreapp3.1\Razor\Pages\PatientData\PatientEdit.razor.g.cs

@@ -1,10 +1,11 @@
 ﻿@page "/PatientData/PatientAdd"
-
 @using AppointmentBookingSystem.Models
 @using AppointmentBookingSystemDAL
+@using AppointmentBookingSystemDAL.DataAccess
 @using AppointmentBookingSystemDAL.Models
-@using Microsoft.AspNetCore.Mvc.TagHelpers.Cache
 @inject IPatientData Database
+@inject NavigationManager NavigationManager
+
 <h1>Patient</h1>
 
 <h4>Insert new patient</h4>
@@ -37,6 +38,7 @@
     </div>
 
     <button type="submit" class="btn btn-primary">Create Patient</button>
+    <button class="btn btn-primary" @onclick="BackToPatient">Back</button>
 </EditForm>
 
 @code {
@@ -57,5 +59,11 @@
         await Database.InsertPatient(patient);
         //wipe out patient model
         _patientAddModel = new PatientAddModel();
+        BackToPatient();
+    }
+
+    private void BackToPatient()
+    {
+        NavigationManager.NavigateTo("/Patients");
     }
 }

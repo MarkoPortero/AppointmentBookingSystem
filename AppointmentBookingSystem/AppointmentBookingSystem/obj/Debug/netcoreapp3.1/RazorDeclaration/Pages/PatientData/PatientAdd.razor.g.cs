@@ -13,92 +13,92 @@ namespace AppointmentBookingSystem.Pages.PatientData
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Components;
 #nullable restore
-#line 1 "C:\work\privaterepo\AppointmentBookingSystem\AppointmentBookingSystem\AppointmentBookingSystem\_Imports.razor"
+#line 1 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\_Imports.razor"
 using System.Net.Http;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 2 "C:\work\privaterepo\AppointmentBookingSystem\AppointmentBookingSystem\AppointmentBookingSystem\_Imports.razor"
+#line 2 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\_Imports.razor"
 using Microsoft.AspNetCore.Authorization;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 3 "C:\work\privaterepo\AppointmentBookingSystem\AppointmentBookingSystem\AppointmentBookingSystem\_Imports.razor"
+#line 3 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\_Imports.razor"
 using Microsoft.AspNetCore.Components.Authorization;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 4 "C:\work\privaterepo\AppointmentBookingSystem\AppointmentBookingSystem\AppointmentBookingSystem\_Imports.razor"
+#line 4 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\_Imports.razor"
 using Microsoft.AspNetCore.Components.Forms;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 5 "C:\work\privaterepo\AppointmentBookingSystem\AppointmentBookingSystem\AppointmentBookingSystem\_Imports.razor"
+#line 5 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\_Imports.razor"
 using Microsoft.AspNetCore.Components.Routing;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 6 "C:\work\privaterepo\AppointmentBookingSystem\AppointmentBookingSystem\AppointmentBookingSystem\_Imports.razor"
+#line 6 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\_Imports.razor"
 using Microsoft.AspNetCore.Components.Web;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 7 "C:\work\privaterepo\AppointmentBookingSystem\AppointmentBookingSystem\AppointmentBookingSystem\_Imports.razor"
+#line 7 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\_Imports.razor"
 using Microsoft.JSInterop;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 8 "C:\work\privaterepo\AppointmentBookingSystem\AppointmentBookingSystem\AppointmentBookingSystem\_Imports.razor"
+#line 8 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\_Imports.razor"
 using AppointmentBookingSystem;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 9 "C:\work\privaterepo\AppointmentBookingSystem\AppointmentBookingSystem\AppointmentBookingSystem\_Imports.razor"
+#line 9 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\_Imports.razor"
 using AppointmentBookingSystem.Shared;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 3 "C:\work\privaterepo\AppointmentBookingSystem\AppointmentBookingSystem\AppointmentBookingSystem\Pages\PatientData\PatientAdd.razor"
+#line 2 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\PatientData\PatientAdd.razor"
 using AppointmentBookingSystem.Models;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 4 "C:\work\privaterepo\AppointmentBookingSystem\AppointmentBookingSystem\AppointmentBookingSystem\Pages\PatientData\PatientAdd.razor"
+#line 3 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\PatientData\PatientAdd.razor"
 using AppointmentBookingSystemDAL;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 5 "C:\work\privaterepo\AppointmentBookingSystem\AppointmentBookingSystem\AppointmentBookingSystem\Pages\PatientData\PatientAdd.razor"
-using AppointmentBookingSystemDAL.Models;
+#line 4 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\PatientData\PatientAdd.razor"
+using AppointmentBookingSystemDAL.DataAccess;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 6 "C:\work\privaterepo\AppointmentBookingSystem\AppointmentBookingSystem\AppointmentBookingSystem\Pages\PatientData\PatientAdd.razor"
-using Microsoft.AspNetCore.Mvc.TagHelpers.Cache;
+#line 5 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\PatientData\PatientAdd.razor"
+using AppointmentBookingSystemDAL.Models;
 
 #line default
 #line hidden
@@ -112,7 +112,7 @@ using Microsoft.AspNetCore.Mvc.TagHelpers.Cache;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 42 "C:\work\privaterepo\AppointmentBookingSystem\AppointmentBookingSystem\AppointmentBookingSystem\Pages\PatientData\PatientAdd.razor"
+#line 44 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\PatientData\PatientAdd.razor"
        
     private PatientAddModel _patientAddModel = new PatientAddModel();
 
@@ -131,11 +131,18 @@ using Microsoft.AspNetCore.Mvc.TagHelpers.Cache;
         await Database.InsertPatient(patient);
         //wipe out patient model
         _patientAddModel = new PatientAddModel();
+        BackToPatient();
+    }
+
+    private void BackToPatient()
+    {
+        NavigationManager.NavigateTo("/Patients");
     }
 
 #line default
 #line hidden
 #nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager NavigationManager { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private IPatientData Database { get; set; }
     }
 }

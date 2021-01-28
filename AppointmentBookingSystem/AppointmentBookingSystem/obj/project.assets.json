@@ -633,19 +633,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\mark.porter\\.nuget\\packages\\": {}
+    "C:\\Users\\MarkP\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\work\\privaterepo\\AppointmentBookingSystem\\AppointmentBookingSystem\\AppointmentBookingSystem\\AppointmentBookingSystem.csproj",
+      "projectUniqueName": "C:\\Users\\MarkP\\source\\repos\\AppointmentBookingSystem\\AppointmentBookingSystem\\AppointmentBookingSystem.csproj",
       "projectName": "AppointmentBookingSystem",
-      "projectPath": "C:\\work\\privaterepo\\AppointmentBookingSystem\\AppointmentBookingSystem\\AppointmentBookingSystem\\AppointmentBookingSystem.csproj",
-      "packagesPath": "C:\\Users\\mark.porter\\.nuget\\packages\\",
-      "outputPath": "C:\\work\\privaterepo\\AppointmentBookingSystem\\AppointmentBookingSystem\\AppointmentBookingSystem\\obj\\",
+      "projectPath": "C:\\Users\\MarkP\\source\\repos\\AppointmentBookingSystem\\AppointmentBookingSystem\\AppointmentBookingSystem.csproj",
+      "packagesPath": "C:\\Users\\MarkP\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\MarkP\\source\\repos\\AppointmentBookingSystem\\AppointmentBookingSystem\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\mark.porter\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\MarkP\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -653,14 +653,14 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "https://www.nuget.org/api/v2/": {}
+        "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "projectReferences": {
-            "C:\\work\\privaterepo\\AppointmentBookingSystem\\AppointmentBookingSystem\\AppointmentBookingSystemDAL\\AppointmentBookingSystemDAL.csproj": {
-              "projectPath": "C:\\work\\privaterepo\\AppointmentBookingSystem\\AppointmentBookingSystem\\AppointmentBookingSystemDAL\\AppointmentBookingSystemDAL.csproj"
+            "C:\\Users\\MarkP\\source\\repos\\AppointmentBookingSystem\\AppointmentBookingSystemDAL\\AppointmentBookingSystemDAL.csproj": {
+              "projectPath": "C:\\Users\\MarkP\\source\\repos\\AppointmentBookingSystem\\AppointmentBookingSystemDAL\\AppointmentBookingSystemDAL.csproj"
             }
           }
         }

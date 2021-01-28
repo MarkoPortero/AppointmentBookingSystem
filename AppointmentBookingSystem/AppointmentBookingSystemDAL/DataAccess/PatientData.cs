@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AppointmentBookingSystemDAL.Models;
 
-namespace AppointmentBookingSystemDAL
+namespace AppointmentBookingSystemDAL.DataAccess
 {
     public class PatientData : IPatientData
     {
@@ -21,32 +20,29 @@ namespace AppointmentBookingSystemDAL
             return _dataAccess.LoadData<PatientModel, dynamic> (query, new { });
         }
 
-        public Task<List<PatientModel>> GetPatient(string firstName, string lastName, DateTime dateOfBirth)
+        public Task<List<PatientModel>> GetPatient(int patientId)
         {
             var query = @"select * from MedPractice.patient 
-                          WHERE MedPractice.patient.FirstName LIKE'@firstName' 
-                          AND MedPractice.patient.LastName LIKE '@lastName'
-                          AND MedPractice.patient.dateOfBirth LIKE '@dateOfBirth'";
+                          WHERE MedPractice.patient.ID = @patientId";
 
-            return _dataAccess.LoadData<PatientModel, dynamic>(query, new {firstName, lastName, dateOfBirth});
+            return _dataAccess.LoadData<PatientModel, dynamic>(query, new{patientId});
         }
 
         public Task DeletePatient(int patientId)
         {
             var query = @"DELETE 
                           FROM MedPractice.patient 
-                          WHERE ID = @patientId";
+                          WHERE MedPractice.patient.ID = @patientId";
 
-            return _dataAccess.SaveData(query, patientId);
+            return _dataAccess.SaveData(query, new{patientId});
         }
 
-        public Task UpdatePatient(PatientModel patient, int patientId)
+        public Task UpdatePatient(PatientModel patient)
         {
             var query = @"UPDATE MedPractice.patient
                           SET FirstName=@FirstName, LastName=@LastName, Address=@Address, ContactNumber=@ContactNumber, email=@Email, dateOfBirth=@dateOfBirth
-                          WHERE ID = @patientId";
-            return _dataAccess.SaveData(query, new{patient, patientId});
-
+                          WHERE ID = @ID";
+            return _dataAccess.SaveData(query, patient);
         }
 
         public Task InsertPatient(PatientModel patient)

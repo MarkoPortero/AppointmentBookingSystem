@@ -1,16 +1,16 @@
 ﻿@page "/Patients"
 
-@using AppointmentBookingSystemDAL
 @using AppointmentBookingSystemDAL.Models
-@using AppointmentBookingSystem.Models
-@using Microsoft.AspNetCore.Mvc.TagHelpers.Cache
+@using AppointmentBookingSystemDAL.DataAccess
 
+@inject NavigationManager NavigationManager
 @inject IPatientData Database
+@inject IJSRuntime JsRuntime
 
 <h1>Patient</h1>
 
 <h4>Insert new patient</h4>
-<a class="btn btn-primary" href="#" role="button">Link</a>
+<a class="btn btn-primary" href="PatientData/PatientAdd" role="button">Add Patient</a>
 
 <h4 class="p-3">Current Patients</h4>
 @if (_patients is null)
@@ -21,25 +21,31 @@ else
 {
     <table class="table table-striped">
         <thead>
-            <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Address</th>
-                <th>Contact Number</th>
-                <th>Email Address</th>
-                <th>Date of Birth</th>
-            </tr>
+        <tr>
+            <th>Patient Id</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Address</th>
+            <th>Contact Number</th>
+            <th>Email Address</th>
+            <th>Date of Birth</th>
+        </tr>
         </thead>
         <tbody>
-            @foreach (var patient in _patients)
+            @foreach (PatientModel patient in _patients)
             {
                 <tr>
+                    <td>@patient.ID</td>
                     <td>@patient.FirstName</td>
                     <td>@patient.LastName</td>
                     <td>@patient.Address</td>
                     <td>@patient.ContactNumber</td>
                     <td>@patient.Email</td>
                     <td>@patient.DateOfBirth.ToString("dd/MM/yyyy")</td>
+                    <td>
+                        <button class="btn-secondary" @onclick="() => EditPatient(patient.ID)">Edit</button>
+                        <button class="btn-secondary" @onclick="() => DeletePatient(patient)">Delete</button>
+                    </td>
                 </tr>
             }
         </tbody>
@@ -48,27 +54,22 @@ else
 
 @code {
     private List<PatientModel> _patients;
-    private PatientAddModel _patientAddModel = new PatientAddModel();
     protected override async Task OnInitializedAsync()
     {
         _patients = await Database.GetPatients();
     }
 
-    private async Task InsertPatient()
+    private async Task DeletePatient(PatientModel patient)
     {
-        PatientModel patient = new PatientModel()
-        {
-            FirstName = _patientAddModel.FirstName,
-            LastName = _patientAddModel.LastName,
-            Address = _patientAddModel.Address,
-            ContactNumber = _patientAddModel.ContactNumber,
-            Email = _patientAddModel.Email,
-            DateOfBirth = _patientAddModel.DateOfBirth.Date
-        };
+        if(!await JsRuntime.InvokeAsync<bool>("confirm", $"Are you sure you want to delete the patient '{patient.FirstName} {patient.LastName}'?"))
+            return;
+        await Database.DeletePatient(patient.ID);
 
-        await Database.InsertPatient(patient);
-        _patients.Add(patient);
-        //wipe out patient model
-        _patientAddModel = new PatientAddModel();
+        _patients.Remove(patient);
+    }
+
+    private void EditPatient(int patientId)
+    {
+        NavigationManager.NavigateTo($"/PatientData/PatientEdit/{patientId}");
     }
 }

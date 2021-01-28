@@ -1,0 +1,87 @@
+﻿@page "/PatientData/PatientEdit/{PatientId}"
+
+@inject NavigationManager NavigationManager
+@inject IPatientData Database
+
+@using AppointmentBookingSystemDAL.DataAccess
+@using AppointmentBookingSystemDAL.Models
+@using AppointmentBookingSystem.Models
+
+@if (Patient is null)
+{
+    <p><em>Loading Patient...</em></p>
+}
+else
+{
+    <h3>Edit Patient Details</h3>
+    <EditForm Model="_patientEditModel" OnValidSubmit="@InsertPatient">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="form-group">
+            <label class="col-sm-2 col-form-label">First Name</label>
+            <InputText id="firstName" @bind-Value="_patientEditModel.FirstName" placeholder="@Patient.FirstName" />
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 col-form-label">Last Name</label>
+            <InputText id="lastName" @bind-Value="_patientEditModel.LastName" placeholder="@Patient.LastName"/>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 col-form-label">Address</label>
+            <InputText id="address" @bind-Value="_patientEditModel.Address" placeholder="@Patient.Address"/>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 col-form-label">Contact Number</label>
+            <InputText id="contactNumber" @bind-Value="_patientEditModel.ContactNumber" placeholder="@Patient.ContactNumber"/>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 col-form-label">Email Address</label>
+            <InputText id="emailAddress" @bind-Value="_patientEditModel.Email" placeholder="@Patient.Email"/>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 col-form-label">Date of Birth</label>
+            <InputDate id="dateOfBirth" @bind-Value="_patientEditModel.DateOfBirth" placeholder="@Patient.DateOfBirth"/>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Edit Patient</button>
+        <button class="btn btn-primary" @onclick="BackToPatient">Back</button>
+    </EditForm>
+}
+
+@code {
+    [Parameter]
+    public string PatientId { get; set; }
+    private PatientModel Patient { get; set; }
+    private PatientAddModel _patientEditModel = new PatientAddModel();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var patientId = int.Parse(PatientId);
+        var data = await Database.GetPatient(patientId);
+        Patient = data.FirstOrDefault();
+    }
+
+    private async Task InsertPatient()
+    {
+        PatientModel patient = new PatientModel()
+        {
+            ID = int.Parse(PatientId),
+            FirstName = _patientEditModel.FirstName,
+            LastName = _patientEditModel.LastName,
+            Address = _patientEditModel.Address,
+            ContactNumber = _patientEditModel.ContactNumber,
+            Email = _patientEditModel.Email,
+            DateOfBirth = _patientEditModel.DateOfBirth.Date
+        };
+
+        await Database.UpdatePatient(patient);
+        //wipe out patient model
+        _patientEditModel = new PatientAddModel();
+        BackToPatient();
+    }
+
+    private void BackToPatient()
+    {
+        NavigationManager.NavigateTo("/Patients");
+    }
+
+}
