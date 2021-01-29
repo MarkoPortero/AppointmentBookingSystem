@@ -1,0 +1,98 @@
+﻿@page "/Staff"
+
+@inject NavigationManager NavigationManager
+@inject IStaffData StaffDatabase
+@inject IUserCredentialsData CredentialsDatabase
+@inject IUserRoleData UserRoleDatabase
+@inject IJSRuntime JsRuntime
+
+<h1>Staff</h1>
+
+<h4>Add new staff</h4>
+<a class="btn btn-primary" href="StaffData/StaffAdd" role="button">Add Staff</a>
+
+<h4 class="p-3">Current Staff</h4>
+
+@if (_staff is null)
+{
+    <p><em>Loading Staff Data...</em></p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Staff Id</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Address</th>
+                <th>Role</th>
+                <th>Username</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (StaffViewModel staff in _staffView)
+            {
+                <tr>
+                    <td>@staff.Id</td>
+                    <td>@staff.FirstName</td>
+                    <td>@staff.LastName</td>
+                    <td>@staff.Address</td>
+                    <td>@staff.Role</td>
+                    <td>@staff.UserName</td>
+                    <td>
+                        <button class="btn-secondary" @onclick="() => EditStaff(staff.Id)">Edit</button>
+                        <button class="btn-secondary" @onclick="() => DeleteStaff(staff)">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<StaffViewModel> _staffView;
+    private List<StaffModel> _staff;
+    private List<UserCredentialsModel> _credentials;
+    private List<UserRolesModel> _roles;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _staff = await StaffDatabase.GetAllStaff();
+        _roles = await UserRoleDatabase.GetAllUserRoles();
+        _credentials = await CredentialsDatabase.GetAllCredentials();
+
+        _staffView = new List<StaffViewModel>();
+        foreach (var staff in _staff)
+        {
+            _staffView.Add(MapStaffViewModel(staff));
+        }
+    }
+
+    private void EditStaff(int staffId)
+    {
+        NavigationManager.NavigateTo($"/StaffData/StaffEdit/{staffId}");
+    }
+
+    private async Task DeleteStaff(StaffViewModel staff)
+    {
+        if (!await JsRuntime.InvokeAsync<bool>("confirm", $"Are you sure you want to delete staff member '{staff.FirstName} {staff.LastName}'?"))
+            return;
+        await StaffDatabase.DeleteStaff(staff.Id);
+        _staffView.Remove(staff);
+    }
+
+    private StaffViewModel MapStaffViewModel(StaffModel staff)
+    {
+        return new StaffViewModel
+        {
+            Address = staff.Address,
+            FirstName = staff.FirstName,
+            LastName = staff.LastName,
+            Id = staff.Id,
+            Role = _roles.Find(x => x.Id == staff.RoleId)?.UserRole,
+            UserName = _credentials.Find(x => x.Id == staff.UserId)?.UserName,
+            Password = _credentials.Find(x => x.Id == staff.UserId)?.Password
+        };
+    }
+}

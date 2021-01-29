@@ -4,7 +4,7 @@
 #pragma warning disable 0649
 #pragma warning disable 0169
 
-namespace AppointmentBookingSystem.Pages.PatientData
+namespace AppointmentBookingSystem.Pages.StaffData
 {
     #line hidden
     using System;
@@ -96,8 +96,8 @@ using AppointmentBookingSystem.Models;
 #line default
 #line hidden
 #nullable disable
-    [Microsoft.AspNetCore.Components.RouteAttribute("/Patients")]
-    public partial class Patient : Microsoft.AspNetCore.Components.ComponentBase
+    [Microsoft.AspNetCore.Components.RouteAttribute("/StaffData/StaffEdit/{StaffId}")]
+    public partial class StaffEdit : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
         protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder)
@@ -105,33 +105,89 @@ using AppointmentBookingSystem.Models;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 52 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\PatientData\Patient.razor"
+#line 52 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\StaffData\StaffEdit.razor"
        
-    private List<PatientModel> _patients;
+    [Parameter]
+    public string StaffId { get; set; }
+    private StaffViewModel StaffViewModel { get; set; }
+    private StaffModel StaffMember { get; set; }
+    private UserCredentialsModel Credentials { get; set; }
+    private UserRolesModel UserRole { get; set; }
+    private List<UserRolesModel> UserRoles { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
-        _patients = await Database.GetAllPatients();
+        var staffData = await StaffDatabase.GetStaff(int.Parse(StaffId));
+        StaffMember = staffData.FirstOrDefault();
+        if (StaffMember != null)
+        {
+            var credentialData = await CredentialsDatabase.GetCredential(StaffMember.UserId);
+            Credentials = credentialData.FirstOrDefault();
+        }
+        else
+        {
+            throw new ArgumentNullException(nameof(StaffMember));
+        }
+        var userRoleData = await UserRoleDatabase.GetUserRole(StaffMember.RoleId);
+        UserRole = userRoleData.FirstOrDefault();
+        UserRoles = await UserRoleDatabase.GetAllUserRoles();
+        StaffViewModel = MapStaffViewModel(StaffMember);
     }
 
-    private async Task DeletePatient(PatientModel patient)
+    private StaffViewModel MapStaffViewModel(StaffModel staff)
     {
-        if(!await JsRuntime.InvokeAsync<bool>("confirm", $"Are you sure you want to delete the patient '{patient.FirstName} {patient.LastName}'?"))
-            return;
-        await Database.DeletePatient(patient.Id);
-
-        _patients.Remove(patient);
+        return new StaffViewModel
+        {
+            Address = staff.Address,
+            FirstName = staff.FirstName,
+            LastName = staff.LastName,
+            Id = staff.Id,
+            Role = UserRole.UserRole,
+            UserName = Credentials.UserName,
+            Password = Credentials.Password
+        };
     }
 
-    private void EditPatient(int patientId)
+    private async Task InsertStaffMember()
     {
-        NavigationManager.NavigateTo($"/PatientData/PatientEdit/{patientId}");
+        var credentials = new UserCredentialsModel
+        {
+            Id = StaffMember.UserId,
+            Password = StaffViewModel.Password,
+            UserName = StaffViewModel.UserName
+        };
+
+        var staffMember = new StaffModel
+        {
+            Id = StaffViewModel.Id,
+            Address = StaffViewModel.Address,
+            FirstName = StaffViewModel.FirstName,
+            LastName = StaffViewModel.LastName,
+            RoleId = UserRoles.Find(x =>
+            {
+                return x.UserRole.Equals(StaffViewModel.Role);
+            }).Id,
+            UserId = StaffMember.UserId
+        };
+
+        await CredentialsDatabase.UpdateCredentials(credentials);
+        await StaffDatabase.UpdateStaff(staffMember);
+        //wipe out staff model
+        StaffViewModel = new StaffViewModel();
+        BackToStaff();
+    }
+
+    private void BackToStaff()
+    {
+        NavigationManager.NavigateTo("/Staff");
     }
 
 #line default
 #line hidden
 #nullable disable
-        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IJSRuntime JsRuntime { get; set; }
-        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IPatientData Database { get; set; }
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IUserRoleData UserRoleDatabase { get; set; }
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IUserCredentialsData CredentialsDatabase { get; set; }
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IStaffData StaffDatabase { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager NavigationManager { get; set; }
     }
 }

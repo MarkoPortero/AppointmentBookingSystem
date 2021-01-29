@@ -25,6 +25,9 @@ namespace AppointmentBookingSystem
             services.AddServerSideBlazor();
             services.AddTransient<ISqlDataAccess, SqlDataAccess>();
             services.AddTransient<IPatientData, PatientData>();
+            services.AddTransient<IStaffData, StaffData>();
+            services.AddTransient<IUserCredentialsData, UserCredentialsData>();
+            services.AddTransient<IUserRoleData, UserRoleData>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

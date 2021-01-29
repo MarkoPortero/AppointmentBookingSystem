@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using AppointmentBookingSystemDAL.Models;
-
-namespace AppointmentBookingSystemDAL.DataAccess
+﻿namespace AppointmentBookingSystemDAL.DataAccess
 {
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using AppointmentBookingSystemDAL.Models;
+
     public class PatientData : IPatientData
     {
         private readonly ISqlDataAccess _dataAccess;
@@ -13,7 +13,7 @@ namespace AppointmentBookingSystemDAL.DataAccess
             _dataAccess = dataAccess;
         }
 
-        public Task<List<PatientModel>> GetPatients()
+        public Task<List<PatientModel>> GetAllPatients()
         {
             var query = "select * from MedPractice.patient";
 

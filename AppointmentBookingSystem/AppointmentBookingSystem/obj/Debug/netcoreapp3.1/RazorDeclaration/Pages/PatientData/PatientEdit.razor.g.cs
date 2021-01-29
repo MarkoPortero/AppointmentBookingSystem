@@ -76,21 +76,21 @@ using AppointmentBookingSystem.Shared;
 #line hidden
 #nullable disable
 #nullable restore
-#line 6 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\PatientData\PatientEdit.razor"
+#line 10 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\_Imports.razor"
 using AppointmentBookingSystemDAL.DataAccess;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 7 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\PatientData\PatientEdit.razor"
+#line 11 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\_Imports.razor"
 using AppointmentBookingSystemDAL.Models;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 8 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\PatientData\PatientEdit.razor"
+#line 12 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\_Imports.razor"
 using AppointmentBookingSystem.Models;
 
 #line default
@@ -105,7 +105,7 @@ using AppointmentBookingSystem.Models;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 50 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\PatientData\PatientEdit.razor"
+#line 46 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\PatientData\PatientEdit.razor"
        
     [Parameter]
     public string PatientId { get; set; }
@@ -117,13 +117,23 @@ using AppointmentBookingSystem.Models;
         var patientId = int.Parse(PatientId);
         var data = await Database.GetPatient(patientId);
         Patient = data.FirstOrDefault();
+        MapEditModel();
     }
 
+    private void MapEditModel()
+    {
+        _patientEditModel.DateOfBirth = Patient.DateOfBirth;
+        _patientEditModel.Address = Patient.Address;
+        _patientEditModel.ContactNumber = Patient.ContactNumber;
+        _patientEditModel.Email = Patient.Email;
+        _patientEditModel.FirstName = Patient.FirstName;
+        _patientEditModel.LastName = Patient.LastName;
+    }
     private async Task InsertPatient()
     {
         PatientModel patient = new PatientModel()
         {
-            ID = int.Parse(PatientId),
+            Id = int.Parse(PatientId),
             FirstName = _patientEditModel.FirstName,
             LastName = _patientEditModel.LastName,
             Address = _patientEditModel.Address,

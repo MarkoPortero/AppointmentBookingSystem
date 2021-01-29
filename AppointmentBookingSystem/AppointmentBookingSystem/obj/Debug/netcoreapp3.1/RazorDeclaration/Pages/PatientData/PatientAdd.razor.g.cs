@@ -105,7 +105,7 @@ using AppointmentBookingSystem.Models;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 40 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\PatientData\PatientAdd.razor"
+#line 41 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\PatientData\PatientAdd.razor"
        
     private PatientAddModel _patientAddModel = new PatientAddModel();
 

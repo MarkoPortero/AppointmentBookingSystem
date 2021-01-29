@@ -4,7 +4,7 @@
 #pragma warning disable 0649
 #pragma warning disable 0169
 
-namespace AppointmentBookingSystem.Shared
+namespace AppointmentBookingSystem.Pages.StaffData
 {
     #line hidden
     using System;
@@ -96,7 +96,8 @@ using AppointmentBookingSystem.Models;
 #line default
 #line hidden
 #nullable disable
-    public partial class NavMenu : Microsoft.AspNetCore.Components.ComponentBase
+    [Microsoft.AspNetCore.Components.RouteAttribute("/Staff")]
+    public partial class Staff : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
         protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder)
@@ -104,20 +105,61 @@ using AppointmentBookingSystem.Models;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 28 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Shared\NavMenu.razor"
+#line 53 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\StaffData\Staff.razor"
        
-    private bool collapseNavMenu = true;
+    private List<StaffViewModel> _staffView;
+    private List<StaffModel> _staff;
+    private List<UserCredentialsModel> _credentials;
+    private List<UserRolesModel> _roles;
 
-    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu()
+    protected override async Task OnInitializedAsync()
     {
-        collapseNavMenu = !collapseNavMenu;
+        _staff = await StaffDatabase.GetAllStaff();
+        _roles = await UserRoleDatabase.GetAllUserRoles();
+        _credentials = await CredentialsDatabase.GetAllCredentials();
+
+        _staffView = new List<StaffViewModel>();
+        foreach (var staff in _staff)
+        {
+            _staffView.Add(MapStaffViewModel(staff));
+        }
+    }
+
+    private void EditStaff(int staffId)
+    {
+        NavigationManager.NavigateTo($"/StaffData/StaffEdit/{staffId}");
+    }
+
+    private async Task DeleteStaff(StaffViewModel staff)
+    {
+        if (!await JsRuntime.InvokeAsync<bool>("confirm", $"Are you sure you want to delete staff member '{staff.FirstName} {staff.LastName}'?"))
+            return;
+        await StaffDatabase.DeleteStaff(staff.Id);
+        _staffView.Remove(staff);
+    }
+
+    private StaffViewModel MapStaffViewModel(StaffModel staff)
+    {
+        return new StaffViewModel
+        {
+            Address = staff.Address,
+            FirstName = staff.FirstName,
+            LastName = staff.LastName,
+            Id = staff.Id,
+            Role = _roles.Find(x => x.Id == staff.RoleId)?.UserRole,
+            UserName = _credentials.Find(x => x.Id == staff.UserId)?.UserName,
+            Password = _credentials.Find(x => x.Id == staff.UserId)?.Password
+        };
     }
 
 #line default
 #line hidden
 #nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IJSRuntime JsRuntime { get; set; }
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IUserRoleData UserRoleDatabase { get; set; }
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IUserCredentialsData CredentialsDatabase { get; set; }
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IStaffData StaffDatabase { get; set; }
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager NavigationManager { get; set; }
     }
 }
 #pragma warning restore 1591
