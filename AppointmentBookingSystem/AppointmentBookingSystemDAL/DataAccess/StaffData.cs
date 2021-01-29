@@ -1,4 +1,6 @@
-﻿namespace AppointmentBookingSystemDAL.DataAccess
+﻿using Dapper;
+
+namespace AppointmentBookingSystemDAL.DataAccess
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -28,12 +30,24 @@
             return _dataAccess.LoadData<StaffModel, dynamic>(query, new { staffId });
         }
 
-        public Task InsertStaff(StaffModel staffModel)
+        public Task InsertStaff(StaffModel staffModel, UserCredentialsModel credentialModel)
         {
-            var query = @"INSERT INTO MedPractice.staff (FirstName, LastName, Address, RoleId, UserId)
-                          VALUES (@FirstName, @LastName, @Address, @ContactNumber, @RoleId, @UserId)";
+            var query = @"INSERT INTO MedPractice.usercredentials(username, password)
+                                   VALUES(@UserName, @Password)
+                          SET @UserId = SCOPE_IDENTITY()
+                          INSERT INTO MedPractice.staff (FirstName, LastName, Address, RoleId, UserId)
+                          VALUES (@FirstName, @LastName, @Address, @RoleId, @UserId)";
 
-            return _dataAccess.SaveData(query, staffModel);
+            return _dataAccess.SaveData(query, new
+            {
+                UserName=credentialModel.UserName, 
+                Password=credentialModel.Password,
+                FirstName=staffModel.FirstName,
+                LastName=staffModel.LastName,
+                Address=staffModel.Address, 
+                RoleId=staffModel.RoleId,
+                UserId=0
+            });
         }
 
         public Task UpdateStaff(StaffModel staffModel)

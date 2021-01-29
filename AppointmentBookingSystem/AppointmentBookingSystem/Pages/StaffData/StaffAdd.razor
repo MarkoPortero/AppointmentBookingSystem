@@ -1,5 +1,91 @@
-﻿<h3>StaffAdd</h3>
+﻿@page "/StaffData/StaffAdd"
 
+@inject NavigationManager NavigationManager
+@inject IStaffData StaffDatabase
+@inject IUserCredentialsData CredentialsDatabase
+@inject IUserRoleData UserRoleDatabase
+
+<h1>Add a new Staff Member</h1>
+@if (UserRoles is null)
+{
+    <p><em>Loading UserRoles...</em></p>
+}
+else
+{
+    <EditForm Model="_staffViewModel" OnValidSubmit="@InsertStaffMember">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="form-group">
+            <label class="col-sm-2 col-form-label">First Name</label>
+            <InputText id="firstName" @bind-Value="_staffViewModel.FirstName" />
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 col-form-label">Last Name</label>
+            <InputText id="lastName" @bind-Value="_staffViewModel.LastName" />
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 col-form-label">Address</label>
+            <InputText id="address" @bind-Value="_staffViewModel.Address" />
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 col-form-label">Staff Member Role</label>
+            <InputSelect id="role" @bind-Value="_staffViewModel.Role">
+                @foreach (var userRole in UserRoles)
+                    {
+                    <option>@userRole.UserRole</option>
+                    }
+            </InputSelect>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 col-form-label">UserName</label>
+            <InputText id="userName" @bind-Value="_staffViewModel.UserName" />
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 col-form-label">Password</label>
+            <InputText id="password" @bind-Value="_staffViewModel.Password" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save Staff</button>
+        <button type="button"class="btn btn-primary" @onclick="BackToStaff">Back</button>
+    </EditForm>
+}
 @code {
+    private StaffViewModel _staffViewModel = new StaffViewModel();
+    private List<UserRolesModel> UserRoles { get; set; }
 
+    protected override async Task OnInitializedAsync()
+    {
+        UserRoles = await UserRoleDatabase.GetAllUserRoles();
+    }
+
+    private async Task InsertStaffMember()
+    {
+        var credentials = new UserCredentialsModel
+        {
+            Password = _staffViewModel.Password,
+            UserName = _staffViewModel.UserName
+        };
+
+        var staffMember = new StaffModel
+        {
+            Address = _staffViewModel.Address,
+            FirstName = _staffViewModel.FirstName,
+            LastName = _staffViewModel.LastName,
+            RoleId = 1
+        };
+        if (_staffViewModel.Role != null && UserRoles != null)
+        {
+            staffMember.RoleId = UserRoles.Find(x => x.UserRole.Equals(_staffViewModel.Role)).Id;
+        }
+
+        await StaffDatabase.InsertStaff(staffMember, credentials);
+        //wipe out staff model
+        _staffViewModel = new StaffViewModel();
+        BackToStaff();
+    }
+
+    private void BackToStaff()
+    {
+        NavigationManager.NavigateTo("/Staff");
+    }
 }

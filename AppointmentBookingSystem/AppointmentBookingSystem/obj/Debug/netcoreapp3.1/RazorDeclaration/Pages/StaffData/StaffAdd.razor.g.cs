@@ -96,6 +96,7 @@ using AppointmentBookingSystem.Models;
 #line default
 #line hidden
 #nullable disable
+    [Microsoft.AspNetCore.Components.RouteAttribute("/StaffData/StaffAdd")]
     public partial class StaffAdd : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
@@ -103,6 +104,55 @@ using AppointmentBookingSystem.Models;
         {
         }
         #pragma warning restore 1998
+#nullable restore
+#line 52 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\StaffData\StaffAdd.razor"
+       
+    private StaffViewModel _staffViewModel = new StaffViewModel();
+    private List<UserRolesModel> UserRoles { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        UserRoles = await UserRoleDatabase.GetAllUserRoles();
+    }
+
+    private async Task InsertStaffMember()
+    {
+        var credentials = new UserCredentialsModel
+        {
+            Password = _staffViewModel.Password,
+            UserName = _staffViewModel.UserName
+        };
+
+        var staffMember = new StaffModel
+        {
+            Address = _staffViewModel.Address,
+            FirstName = _staffViewModel.FirstName,
+            LastName = _staffViewModel.LastName,
+            RoleId = 1
+        };
+        if (_staffViewModel.Role != null && UserRoles != null)
+        {
+            staffMember.RoleId = UserRoles.Find(x => x.UserRole.Equals(_staffViewModel.Role)).Id;
+        }
+
+        await StaffDatabase.InsertStaff(staffMember, credentials);
+        //wipe out staff model
+        _staffViewModel = new StaffViewModel();
+        BackToStaff();
+    }
+
+    private void BackToStaff()
+    {
+        NavigationManager.NavigateTo("/Staff");
+    }
+
+#line default
+#line hidden
+#nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IUserRoleData UserRoleDatabase { get; set; }
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IUserCredentialsData CredentialsDatabase { get; set; }
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IStaffData StaffDatabase { get; set; }
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager NavigationManager { get; set; }
     }
 }
 #pragma warning restore 1591

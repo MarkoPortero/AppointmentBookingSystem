@@ -10,5 +10,6 @@
         Task<List<StaffModel>> GetStaff(int staffId);
         Task UpdateStaff(StaffModel staffModel);
         Task DeleteStaff(int staffId);
+        Task InsertStaff(StaffModel staffModel, UserCredentialsModel credentialModel);
     }
 }
