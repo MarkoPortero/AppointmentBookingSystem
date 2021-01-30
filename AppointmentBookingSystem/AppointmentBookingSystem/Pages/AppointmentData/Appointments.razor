@@ -1,0 +1,72 @@
+﻿@page "/Appointments"
+
+@inject IAppointmentData AppointmentDatabase
+@inject IJSRuntime JsRuntime
+@inject NavigationManager NavigationManager
+<h1>Appointments</h1>
+
+<h4>Add new appointment</h4>
+<a class="btn btn-primary" href="/AppointmentData/AppointmentAdd" role="button">Add Appointment</a>
+
+<h4 class="p-3">Current Appointments</h4>
+
+@if (_appointments is null)
+{
+    <p><em>Loading Appointment Data...</em></p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Appointment Id</th>
+                <th>Patient Id</th>
+                <th>Staff Id</th>
+                <th>Appointment DateTime</th>
+                <th>Appointment Duration</th>
+                <th>Patient Name</th>
+                <th>Staff Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (AppointmentModel appointment in _appointments)
+            {
+                <tr>
+                    <td>@appointment.Id</td>
+                    <td>@appointment.PatientId</td>
+                    <td>@appointment.StaffId</td>
+                    <td>@appointment.AppointmentDateTime</td>
+                    <td>@appointment.AppointmentDuration</td>
+                    <td>@appointment.PatientFirstname @appointment.PatientLastname</td>
+                    <td>@appointment.StaffFirstName @appointment.StaffLastName</td>
+
+                    <td>
+                        <button class="btn-secondary" @onclick="() => EditAppointment(appointment.Id)">Edit</button>
+                        <button class="btn-secondary" @onclick="() => DeleteAppointment(appointment)">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+@code {
+    private List<AppointmentModel> _appointments;
+    protected override async Task OnInitializedAsync()
+    {
+        _appointments = await AppointmentDatabase.GetAllAppointments();
+    }
+
+    private void EditAppointment(int appointmentId)
+    {
+        NavigationManager.NavigateTo($"/AppointmentData/AppointmentEdit/{appointmentId}");
+    }
+
+    private async Task DeleteAppointment(AppointmentModel appointment)
+    {
+        if(!await JsRuntime.InvokeAsync<bool>("confirm", $"Are you sure you want to delete the appointment for '{appointment.PatientFirstname} {appointment.PatientLastname}'?"))
+            return;
+        await AppointmentDatabase.DeleteAppointment(appointment.Id);
+
+        _appointments.Remove(appointment);
+    }
+}

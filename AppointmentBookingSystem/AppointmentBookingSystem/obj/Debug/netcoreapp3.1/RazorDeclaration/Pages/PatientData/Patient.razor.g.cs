@@ -96,6 +96,13 @@ using AppointmentBookingSystem.Models;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 13 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\_Imports.razor"
+using AppointmentBookingSystemDAL.DataAccess.Interfaces;
+
+#line default
+#line hidden
+#nullable disable
     [Microsoft.AspNetCore.Components.RouteAttribute("/Patients")]
     public partial class Patient : Microsoft.AspNetCore.Components.ComponentBase
     {
@@ -105,7 +112,7 @@ using AppointmentBookingSystem.Models;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 52 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\PatientData\Patient.razor"
+#line 51 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\PatientData\Patient.razor"
        
     private List<PatientModel> _patients;
     protected override async Task OnInitializedAsync()

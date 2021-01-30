@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using AppointmentBookingSystemDAL.DataAccess.Interfaces;
 
 namespace AppointmentBookingSystemDAL.DataAccess
 {

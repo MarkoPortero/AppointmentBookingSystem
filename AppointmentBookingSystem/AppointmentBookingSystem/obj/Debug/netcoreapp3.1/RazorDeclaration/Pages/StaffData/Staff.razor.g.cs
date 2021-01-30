@@ -96,6 +96,13 @@ using AppointmentBookingSystem.Models;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 13 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\_Imports.razor"
+using AppointmentBookingSystemDAL.DataAccess.Interfaces;
+
+#line default
+#line hidden
+#nullable disable
     [Microsoft.AspNetCore.Components.RouteAttribute("/Staff")]
     public partial class Staff : Microsoft.AspNetCore.Components.ComponentBase
     {

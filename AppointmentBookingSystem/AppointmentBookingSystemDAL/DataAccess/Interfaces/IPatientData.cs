@@ -1,9 +1,9 @@
-﻿namespace AppointmentBookingSystemDAL.DataAccess
-{
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-    using AppointmentBookingSystemDAL.Models;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using AppointmentBookingSystemDAL.Models;
 
+namespace AppointmentBookingSystemDAL.DataAccess.Interfaces
+{
     public interface IPatientData
     {
         Task<List<PatientModel>> GetAllPatients();

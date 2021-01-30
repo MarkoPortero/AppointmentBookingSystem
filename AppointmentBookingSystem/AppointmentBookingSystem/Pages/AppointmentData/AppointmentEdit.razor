@@ -1,0 +1,107 @@
+﻿@page "/AppointmentData/AppointmentEdit/{AppointmentId}"
+@inject NavigationManager NavigationManager
+@inject IStaffData StaffDatabase
+@inject IPatientData PatientDatabase
+@inject IAppointmentData AppointmentDatabase
+@inject IJSRuntime JsRuntime
+<h3>AppointmentEdit</h3>
+
+@if (StaffMembers is null || Patients is null || _appointmentModel is null || StaffMember is null)
+{
+    <p><em>Loading data...</em></p>
+}
+else
+{
+    <EditForm Model="_appointmentModel" OnValidSubmit="@EditAppointment">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="form-group">
+            <label class="col-sm-2 col-form-label">Staff Name</label>
+            <InputText disabled=true @bind-Value="StaffMember"></InputText>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 col-form-label">Patient Name</label>
+            <InputText disabled=true @bind-Value="SelectedPatient"></InputText>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 col-form-label">Appointment Date</label>
+            <InputDateTime id="address" @bind-Value="_appointmentModel.AppointmentDateTime" />
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 col-form-label">Appointment Duration</label>
+            <InputSelect id="role" @bind-Value="Duration">
+                <option>15</option>
+                <option>30</option>
+                <option>45</option>
+                <option>60</option>
+            </InputSelect>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save Appointment</button>
+        <button type="button" class="btn btn-primary" @onclick="BackToAppointments">Back</button>
+    </EditForm>
+}
+@code {
+    [Parameter]
+    public string AppointmentId { get; set; }
+    AppointmentModel _appointmentModel = new AppointmentModel();
+    private List<StaffModel> StaffMembers { get; set; }
+    private List<PatientModel> Patients { get; set; }
+    private string SelectedPatient { get; set; }
+    private string StaffMember { get; set; }
+    private string Duration { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var appointmentId = int.Parse(AppointmentId);
+        var data = await AppointmentDatabase.GetAppointment(appointmentId);
+        _appointmentModel = data.FirstOrDefault();
+        if (_appointmentModel != null)
+        {
+            StaffMember = $"{_appointmentModel.StaffId} {_appointmentModel.StaffFirstName} {_appointmentModel.StaffLastName}";
+            SelectedPatient = $"{_appointmentModel.PatientId} {_appointmentModel.PatientFirstname} {_appointmentModel.PatientLastname}";
+            Duration = _appointmentModel.AppointmentDuration.ToString();
+        }
+        StaffMembers = await StaffDatabase.GetAllStaff();
+        Patients = await PatientDatabase.GetAllPatients();
+    }
+
+    private async Task EditAppointment()
+    {
+        if (StaffMember is null)
+        {
+            await JsRuntime.InvokeVoidAsync("alert", $"Please select a valid Staff Member");
+            return;
+        }
+        if (SelectedPatient is null)
+        {
+            await JsRuntime.InvokeVoidAsync("alert", $"Please select a valid Patient");
+            return;
+        }
+        string[] staffDetails = StaffMember.Split(' ');
+        string[] patientDetails = SelectedPatient.Split(' ');
+
+        if (!int.TryParse(patientDetails[0], out int patientId))
+        {
+            await JsRuntime.InvokeVoidAsync("alert", $"Please select a valid Patient");
+            return;
+        }
+        if (!int.TryParse(staffDetails[0], out int staffId))
+        {
+            await JsRuntime.InvokeVoidAsync("alert", $"Please select a valid Staff Member");
+            return;
+        }
+        _appointmentModel.PatientId = patientId;
+        _appointmentModel.StaffId = staffId;
+        _appointmentModel.AppointmentDuration = int.Parse(Duration);
+
+        await AppointmentDatabase.UpdateAppointment(_appointmentModel);
+        _appointmentModel = new AppointmentModel();
+        BackToAppointments();
+    }
+
+    private void BackToAppointments()
+    {
+        NavigationManager.NavigateTo("/Appointments");
+    }
+}

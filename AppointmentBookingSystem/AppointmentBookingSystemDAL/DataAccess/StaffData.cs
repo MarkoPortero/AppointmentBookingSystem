@@ -1,4 +1,5 @@
-﻿using Dapper;
+﻿using AppointmentBookingSystemDAL.DataAccess.Interfaces;
+using Dapper;
 
 namespace AppointmentBookingSystemDAL.DataAccess
 {
@@ -62,8 +63,11 @@ namespace AppointmentBookingSystemDAL.DataAccess
         public Task DeleteStaff(int staffId)
         {
             var query = @"DELETE
+                          FROM MedPractice.appointment
+                          WHERE MedPractice.appointment.staffId = @staffId;
+                          DELETE
                           FROM MedPractice.staff
-                          WHERE MedPractice.staff.ID = @staffId";
+                          WHERE MedPractice.staff.ID = @staffId;";
 
             return _dataAccess.SaveData(query, new { staffId });
         }

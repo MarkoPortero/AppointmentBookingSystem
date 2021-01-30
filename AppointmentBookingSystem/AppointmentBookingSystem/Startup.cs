@@ -1,5 +1,3 @@
-using AppointmentBookingSystemDAL.DataAccess;
-
 namespace AppointmentBookingSystem
 {
     using AppointmentBookingSystemDAL;
@@ -8,6 +6,8 @@ namespace AppointmentBookingSystem
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using AppointmentBookingSystemDAL.DataAccess;
+    using AppointmentBookingSystemDAL.DataAccess.Interfaces;
 
     public class Startup
     {
@@ -28,6 +28,7 @@ namespace AppointmentBookingSystem
             services.AddTransient<IStaffData, StaffData>();
             services.AddTransient<IUserCredentialsData, UserCredentialsData>();
             services.AddTransient<IUserRoleData, UserRoleData>();
+            services.AddTransient<IAppointmentData, AppointmentData>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

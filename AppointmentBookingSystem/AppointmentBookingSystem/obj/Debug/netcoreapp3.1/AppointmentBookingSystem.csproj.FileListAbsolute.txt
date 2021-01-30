@@ -124,3 +124,13 @@ C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\ob
 C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\StaffData\StaffEdit.razor.g.cs
 C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\obj\Debug\netcoreapp3.1\Razor\Pages\StaffData\StaffAdd.razor.g.cs
 C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\obj\Debug\netcoreapp3.1\Razor\Pages\StaffData\StaffEdit.razor.g.cs
+C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\AppointmentData\Appointments.razor.g.cs
+C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\obj\Debug\netcoreapp3.1\Razor\Pages\AppointmentData\Appointments.razor.g.cs
+C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\bin\Debug\netcoreapp3.1\AutoMapper.dll
+C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\bin\Debug\netcoreapp3.1\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\AppointmentData\AppointmentAdd.razor.g.cs
+C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\obj\Debug\netcoreapp3.1\Razor\Pages\AppointmentData\AppointmentAdd.razor.g.cs
+C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\AppointmentData\AppointmentEdit.razor.g.cs
+C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\obj\Debug\netcoreapp3.1\Razor\Pages\AppointmentData\AppointmentEdit.razor.g.cs
+C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\PatientNotesData\PatientNotes.razor.g.cs
+C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\obj\Debug\netcoreapp3.1\Razor\Pages\PatientNotesData\PatientNotes.razor.g.cs

@@ -1,4 +1,6 @@
-﻿namespace AppointmentBookingSystemDAL.DataAccess
+﻿using AppointmentBookingSystemDAL.DataAccess.Interfaces;
+
+namespace AppointmentBookingSystemDAL.DataAccess
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -30,9 +32,13 @@
 
         public Task DeletePatient(int patientId)
         {
-            var query = @"DELETE 
+            var query = @"DELETE
+                          FROM MedPractice.appointment
+                          WHERE MedPractice.appointment.patientId = @patientId;
+                          DELETE 
                           FROM MedPractice.patient 
-                          WHERE MedPractice.patient.ID = @patientId";
+                          WHERE MedPractice.patient.ID = @patientId;";
+                        
 
             return _dataAccess.SaveData(query, new{patientId});
         }

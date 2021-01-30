@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using AppointmentBookingSystemDAL.Models;
 
-namespace AppointmentBookingSystemDAL.DataAccess
+namespace AppointmentBookingSystemDAL.DataAccess.Interfaces
 {
     public interface IUserCredentialsData
     {
