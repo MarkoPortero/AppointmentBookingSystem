@@ -11,5 +11,6 @@ namespace AppointmentBookingSystemDAL.DataAccess.Interfaces
         Task UpdateStaff(StaffModel staffModel);
         Task DeleteStaff(int staffId);
         Task InsertStaff(StaffModel staffModel, UserCredentialsModel credentialModel);
+        Task<List<StaffModel>> GetStaffFromCredentials(int credentialId);
     }
 }

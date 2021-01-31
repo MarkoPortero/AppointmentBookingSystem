@@ -1,8 +1,7 @@
-﻿using System.Data;
-using AppointmentBookingSystemDAL.DataAccess.Interfaces;
-
-namespace AppointmentBookingSystemDAL.DataAccess
+﻿namespace AppointmentBookingSystemDAL.DataAccess
 {
+    using System.Data;
+    using AppointmentBookingSystemDAL.DataAccess.Interfaces;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using AppointmentBookingSystemDAL.Models;

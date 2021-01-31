@@ -3,7 +3,7 @@
 @inject IAppointmentData AppointmentDatabase
 @inject IJSRuntime JsRuntime
 @inject NavigationManager NavigationManager
-@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+@inject Blazored.SessionStorage.ISessionStorageService SessionStorage
 
 <h1>Appointments</h1>
 @attribute [Authorize]
@@ -53,14 +53,16 @@ else
         </tbody>
     </table>
 }
+
 @code {
     private List<AppointmentModel> _appointments;
+
     protected override async Task OnInitializedAsync()
     {
-        var role = await sessionStorage.GetItemAsync<string>("role");
+        var role = await SessionStorage.GetItemAsync<string>("role");
         if (role == "Medical Practitioner")
         {
-            var id = await sessionStorage.GetItemAsync<string>("userId");
+            var id = await SessionStorage.GetItemAsync<string>("userId");
             _appointments = await AppointmentDatabase.GetAllAppointmentsForStaffMemberFromCredentials(int.Parse(id));
         }
         else

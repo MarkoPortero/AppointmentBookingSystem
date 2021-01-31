@@ -4,7 +4,7 @@
 #pragma warning disable 0649
 #pragma warning disable 0169
 
-namespace AppointmentBookingSystem.Shared
+namespace AppointmentBookingSystem.Pages.AppointmentData
 {
     #line hidden
     using System;
@@ -103,7 +103,15 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
 #line default
 #line hidden
 #nullable disable
-    public partial class NavMenu : Microsoft.AspNetCore.Components.ComponentBase
+#nullable restore
+#line 2 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\AppointmentData\AppointmentHistory.razor"
+           [Authorize(Roles = "Medical Practitioner")]
+
+#line default
+#line hidden
+#nullable disable
+    [Microsoft.AspNetCore.Components.RouteAttribute("/AppointmentData/AppointmentHistory")]
+    public partial class AppointmentHistory : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
         protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder)
@@ -111,20 +119,47 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 52 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Shared\NavMenu.razor"
+#line 61 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\AppointmentData\AppointmentHistory.razor"
        
-    private bool _collapseNavMenu = true;
+    private AppointmentModel _appointment = new AppointmentModel();
+    private List<AppointmentModel> _appointments;
+    private List<PatientModel> Patients { get; set; }
+    private string SelectedPatient { get; set; }
+    private bool PatientSelected { get; set; } = false;
+    private int PatientId { get; set; }
+    private int StaffId;
 
-    private string NavMenuCssClass => _collapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu()
+    protected override async Task OnInitializedAsync()
     {
-        _collapseNavMenu = !_collapseNavMenu;
+        Patients = await PatientDatabase.GetAllPatients();
+        var id = await SessionStorage.GetItemAsync<string>("userId");
+        StaffId = int.Parse(id);
+        _appointments = await AppointmentDatabase.GetAllAppointmentsForStaffMemberFromCredentials(StaffId);
+    }
+
+    private void GetAppointmentHistory()
+    {
+        if (SelectedPatient is null)
+        {
+            return;
+        }
+        string[] patientDetails = SelectedPatient.Split(' ');
+        PatientId = int.Parse(patientDetails[0]);
+        PatientSelected = true;
+    }
+
+    private void ViewNotes(int appointmentId, int patientId)
+    {
+        NavigationManager.NavigateTo($"/PatientNotes/{appointmentId}/{patientId}/{StaffId}");
     }
 
 #line default
 #line hidden
 #nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager NavigationManager { get; set; }
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private Blazored.SessionStorage.ISessionStorageService SessionStorage { get; set; }
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IAppointmentData AppointmentDatabase { get; set; }
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IPatientData PatientDatabase { get; set; }
     }
 }
 #pragma warning restore 1591

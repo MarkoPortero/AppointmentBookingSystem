@@ -1,8 +1,7 @@
-using Blazored.SessionStorage;
-using Microsoft.AspNetCore.Components.Authorization;
-
 namespace AppointmentBookingSystem
 {
+    using Blazored.SessionStorage;
+    using Microsoft.AspNetCore.Components.Authorization;
     using AppointmentBookingSystemDAL;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -34,6 +33,7 @@ namespace AppointmentBookingSystem
             services.AddTransient<IUserCredentialsData, UserCredentialsData>();
             services.AddTransient<IUserRoleData, UserRoleData>();
             services.AddTransient<IAppointmentData, AppointmentData>();
+            services.AddTransient<IPatientNotesData, PatientNotesData>();
         }
 
         // This method gets called by the runtime - configures the HTTP request pipeline.

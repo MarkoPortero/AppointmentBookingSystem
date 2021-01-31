@@ -103,7 +103,7 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
 #line default
 #line hidden
 #nullable disable
-    [Microsoft.AspNetCore.Components.RouteAttribute("/PatientNotes")]
+    [Microsoft.AspNetCore.Components.RouteAttribute("/PatientNotes/{appointmentId}/{patientId}/{StaffId}")]
     public partial class PatientNotes : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
@@ -111,6 +111,59 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
         {
         }
         #pragma warning restore 1998
+#nullable restore
+#line 20 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\PatientNotesData\PatientNotes.razor"
+ 
+    [Parameter]
+    public string AppointmentId { get; set; }
+    [Parameter]
+    public string PatientId { get; set; }
+    [Parameter]
+    public string StaffId { get; set; }
+
+    public PatientNotesModel PatientNotesModel = new PatientNotesModel();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Task.WaitAll();
+        var appointmentId = int.Parse(AppointmentId);
+        var data = await PatientNotesDatabase.GetPatientNotes(appointmentId);
+        var staff = await StaffDatabase.GetStaffFromCredentials(int.Parse(StaffId));
+
+        if (data.Any())
+        {
+            PatientNotesModel = data.FirstOrDefault();
+        }
+        else
+        {
+            PatientNotesModel = new PatientNotesModel
+            {
+                AppointmentId = int.Parse(AppointmentId),
+                PatientId = int.Parse(PatientId),
+                StaffId = staff[0].Id
+            };
+        }
+
+    }
+
+    private async Task SavePatientNotes()
+    {
+        await PatientNotesDatabase.UpsertPatientNotes(PatientNotesModel);
+    }
+
+    private void NavigateToPatientHistory()
+    {
+        NavigationManager.NavigateTo("/AppointmentData/AppointmentHistory");
+    }
+
+
+
+#line default
+#line hidden
+#nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IStaffData StaffDatabase { get; set; }
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IPatientNotesData PatientNotesDatabase { get; set; }
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager NavigationManager { get; set; }
     }
 }
 #pragma warning restore 1591

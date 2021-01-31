@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using AppointmentBookingSystemDAL.DataAccess.Interfaces;
-using AppointmentBookingSystemDAL.Models;
-
-namespace AppointmentBookingSystemDAL.DataAccess
+﻿namespace AppointmentBookingSystemDAL.DataAccess
 {
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using AppointmentBookingSystemDAL.DataAccess.Interfaces;
+    using AppointmentBookingSystemDAL.Models;
+
     public class UserRoleData : IUserRoleData
     {
         private readonly ISqlDataAccess _dataAccess;

@@ -6,5 +6,6 @@
         public int StaffId { get; set; }
         public int PatientId { get; set; }
         public string PatientNotes { get; set; }
+        public int AppointmentId { get; set; }
     }
 }

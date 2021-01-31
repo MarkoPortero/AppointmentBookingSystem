@@ -119,15 +119,16 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 56 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\AppointmentData\Appointments.razor"
+#line 57 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\AppointmentData\Appointments.razor"
        
     private List<AppointmentModel> _appointments;
+
     protected override async Task OnInitializedAsync()
     {
-        var role = await sessionStorage.GetItemAsync<string>("role");
+        var role = await SessionStorage.GetItemAsync<string>("role");
         if (role == "Medical Practitioner")
         {
-            var id = await sessionStorage.GetItemAsync<string>("userId");
+            var id = await SessionStorage.GetItemAsync<string>("userId");
             _appointments = await AppointmentDatabase.GetAllAppointmentsForStaffMemberFromCredentials(int.Parse(id));
         }
         else
@@ -153,7 +154,7 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
 #line default
 #line hidden
 #nullable disable
-        [global::Microsoft.AspNetCore.Components.InjectAttribute] private Blazored.SessionStorage.ISessionStorageService sessionStorage { get; set; }
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private Blazored.SessionStorage.ISessionStorageService SessionStorage { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager NavigationManager { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private IJSRuntime JsRuntime { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private IAppointmentData AppointmentDatabase { get; set; }

@@ -1,1 +1,64 @@
-﻿@page "/PatientNotes"
+﻿@page "/PatientNotes/{appointmentId}/{patientId}/{StaffId}"
+
+@inject NavigationManager NavigationManager
+@inject IPatientNotesData PatientNotesDatabase
+@inject IStaffData StaffDatabase
+
+<EditForm Model="PatientNotesModel" OnValidSubmit="@SavePatientNotes">
+    <div class="form-group">
+        <label class="col-sm-2 col-form-label">Patient Id @PatientNotesModel.PatientId</label>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 col-form-label">Patient Notes</label>
+        <InputTextArea class="col-lg-6" id="PatientNotes" @bind-Value="PatientNotesModel.PatientNotes"/>
+    </div>
+    <button type="submit" class="btn btn-primary">Save Note</button>
+    <button type="button" class="btn btn-primary" @onclick="NavigateToPatientHistory">Back</button>
+</EditForm>
+
+@code
+{
+    [Parameter]
+    public string AppointmentId { get; set; }
+    [Parameter]
+    public string PatientId { get; set; }
+    [Parameter]
+    public string StaffId { get; set; }
+
+    public PatientNotesModel PatientNotesModel = new PatientNotesModel();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Task.WaitAll();
+        var appointmentId = int.Parse(AppointmentId);
+        var data = await PatientNotesDatabase.GetPatientNotes(appointmentId);
+        var staff = await StaffDatabase.GetStaffFromCredentials(int.Parse(StaffId));
+
+        if (data.Any())
+        {
+            PatientNotesModel = data.FirstOrDefault();
+        }
+        else
+        {
+            PatientNotesModel = new PatientNotesModel
+            {
+                AppointmentId = int.Parse(AppointmentId),
+                PatientId = int.Parse(PatientId),
+                StaffId = staff[0].Id
+            };
+        }
+
+    }
+
+    private async Task SavePatientNotes()
+    {
+        await PatientNotesDatabase.UpsertPatientNotes(PatientNotesModel);
+    }
+
+    private void NavigateToPatientHistory()
+    {
+        NavigationManager.NavigateTo("/AppointmentData/AppointmentHistory");
+    }
+
+
+}

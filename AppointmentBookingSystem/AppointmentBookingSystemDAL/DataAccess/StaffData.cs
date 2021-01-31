@@ -1,11 +1,9 @@
-﻿using AppointmentBookingSystemDAL.DataAccess.Interfaces;
-using Dapper;
-
-namespace AppointmentBookingSystemDAL.DataAccess
+﻿namespace AppointmentBookingSystemDAL.DataAccess
 {
+    using AppointmentBookingSystemDAL.DataAccess.Interfaces;
+    using Models;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using Models;
 
     public class StaffData : IStaffData
     {

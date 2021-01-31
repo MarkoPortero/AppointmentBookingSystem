@@ -1,0 +1,93 @@
+﻿@page "/AppointmentData/AppointmentHistory"
+@attribute [Authorize(Roles = "Medical Practitioner")]
+@inject IPatientData PatientDatabase
+@inject IAppointmentData AppointmentDatabase
+@inject Blazored.SessionStorage.ISessionStorageService SessionStorage
+@inject NavigationManager NavigationManager
+
+@if (Patients is null)
+{
+    <p><em>Loading Patients...</em></p>
+}
+else
+{
+    <EditForm Model="_appointment">
+        <h1>AppointmentHistory</h1>
+        <h3>Please select a patient:</h3>
+        <InputSelect id="PatientId" @bind-Value="SelectedPatient">
+            <option>Patient</option>
+            @foreach (var patient in Patients)
+                {
+                <option>@patient.Id @patient.FirstName @patient.LastName</option>
+                }
+        </InputSelect>
+        <button class="btn-primary" @onclick="GetAppointmentHistory">Get history</button>
+    </EditForm>
+    @if (PatientSelected)
+    {
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Appointment Id</th>
+                    <th>Patient Id</th>
+                    <th>Staff Id</th>
+                    <th>Appointment DateTime</th>
+                    <th>Appointment Duration</th>
+                    <th>Patient Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (AppointmentModel appointment in _appointments)
+                {
+                    if (appointment.PatientId == PatientId)
+                    {
+                        <tr>
+                            <td>@appointment.Id</td>
+                            <td>@appointment.PatientId</td>
+                            <td>@appointment.AppointmentDateTime</td>
+                            <td>@appointment.AppointmentDuration</td>
+                            <td>@appointment.PatientFirstname @appointment.PatientLastname</td>
+
+                            <td>
+                                <button class="btn-primary" @onclick="() => ViewNotes(appointment.Id, PatientId)">View Notes</button>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    }
+}
+@code {
+    private AppointmentModel _appointment = new AppointmentModel();
+    private List<AppointmentModel> _appointments;
+    private List<PatientModel> Patients { get; set; }
+    private string SelectedPatient { get; set; }
+    private bool PatientSelected { get; set; } = false;
+    private int PatientId { get; set; }
+    private int StaffId;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Patients = await PatientDatabase.GetAllPatients();
+        var id = await SessionStorage.GetItemAsync<string>("userId");
+        StaffId = int.Parse(id);
+        _appointments = await AppointmentDatabase.GetAllAppointmentsForStaffMemberFromCredentials(StaffId);
+    }
+
+    private void GetAppointmentHistory()
+    {
+        if (SelectedPatient is null)
+        {
+            return;
+        }
+        string[] patientDetails = SelectedPatient.Split(' ');
+        PatientId = int.Parse(patientDetails[0]);
+        PatientSelected = true;
+    }
+
+    private void ViewNotes(int appointmentId, int patientId)
+    {
+        NavigationManager.NavigateTo($"/PatientNotes/{appointmentId}/{patientId}/{StaffId}");
+    }
+}
