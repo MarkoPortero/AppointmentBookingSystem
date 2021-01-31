@@ -31,6 +31,15 @@ namespace AppointmentBookingSystemDAL.DataAccess
             return _dataAccess.LoadData<UserCredentialsModel, dynamic>(query, new {credentialId});
         }
 
+        public Task<List<UserCredentialsModel>> GetCredentialFromLogin(string username, string password)
+        {
+            const string query = @"select * from MedPractice.usercredentials 
+                                   WHERE MedPractice.usercredentials.UserName = @username
+                                   AND MedPractice.usercredentials.Password = @password";
+
+            return _dataAccess.LoadData<UserCredentialsModel, dynamic>(query, new { username = username, password = password });
+        }
+
         public Task InsertCredentials(UserCredentialsModel credentials)
         {
             const string query = @"INSERT INTO MedPractice.usercredentials(username, password)

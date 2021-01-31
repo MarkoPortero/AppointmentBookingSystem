@@ -39,8 +39,8 @@ else
                     <td>@patient.Email</td>
                     <td>@patient.DateOfBirth.ToString("dd/MM/yyyy")</td>
                     <td>
-                        <button class="btn-secondary" @onclick="() => EditPatient(patient.Id)">Edit</button>
-                        <button class="btn-secondary" @onclick="() => DeletePatient(patient)">Delete</button>
+                        <button class="btn-primary" @onclick="() => EditPatient(patient.Id)">Edit</button>
+                        <button class="btn-primary" @onclick="() => DeletePatient(patient)">Delete</button>
                     </td>
                 </tr>
             }

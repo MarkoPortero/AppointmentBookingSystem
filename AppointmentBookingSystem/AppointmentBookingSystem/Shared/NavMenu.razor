@@ -4,39 +4,53 @@
         <span class="navbar-toggler-icon"></span>
     </button>
 </div>
-
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-    <ul class="nav flex-column">
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="Patients">
-                <span class="oi oi-people" aria-hidden="true"></span> Patients
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="Staff">
-                <span class="oi oi-people" aria-hidden="true"></span> Staff
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="Appointments">
-                <span class="oi oi-calendar" aria-hidden="true"></span> Appointments
-            </NavLink>
-        </li>
-    </ul>
-</div>
+<AuthorizeView>
+    <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+        <ul class="nav flex-column">
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                    <span class="oi oi-home" aria-hidden="true"></span> Home
+                </NavLink>
+            </li>
+            <AuthorizeView Roles="Administrator" Context="staff">
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="Staff">
+                        <span class="oi oi-person" aria-hidden="true"></span> Staff
+                    </NavLink>
+                </li>
+            </AuthorizeView>
+            <AuthorizeView Roles="Administrator, Receptionist" Context="patients">
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="Patients">
+                        <span class="oi oi-people" aria-hidden="true"></span> Patients
+                    </NavLink>
+                </li>
+            </AuthorizeView>
+            <AuthorizeView Roles="Administrator, Receiptionist, Medical Practitioner" Context="appointments">
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="Appointments">
+                        <span class="oi oi-calendar" aria-hidden="true"></span> Appointments
+                    </NavLink>
+                </li>
+            </AuthorizeView>
+            <AuthorizeView Roles="Medical Practitioner" Context="patientNotes">
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="patientNotes">
+                        <span class="oi oi-calendar" aria-hidden="true"></span> Patient Notes
+                    </NavLink>
+                </li>
+            </AuthorizeView>
+        </ul>
+    </div>
+</AuthorizeView>
 
 @code {
-    private bool collapseNavMenu = true;
+    private bool _collapseNavMenu = true;
 
-    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+    private string NavMenuCssClass => _collapseNavMenu ? "collapse" : null;
 
     private void ToggleNavMenu()
     {
-        collapseNavMenu = !collapseNavMenu;
+        _collapseNavMenu = !_collapseNavMenu;
     }
 }

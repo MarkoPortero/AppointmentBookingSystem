@@ -31,6 +31,17 @@ namespace AppointmentBookingSystemDAL.DataAccess
             return _dataAccess.LoadData<StaffModel, dynamic>(query, new { staffId });
         }
 
+        public Task<List<StaffModel>> GetStaffFromCredentials(int credentialId)
+        {
+            var query = @"SELECT MedPractice.staff.* 
+                          FROM MedPractice.staff
+                          INNER JOIN MedPractice.usercredentials
+                          ON MedPractice.staff.UserId = MedPractice.usercredentials.ID
+                          WHERE MedPractice.usercredentials.ID = @credentialId";
+
+            return _dataAccess.LoadData<StaffModel, dynamic>(query, new { credentialId });
+        }
+
         public Task InsertStaff(StaffModel staffModel, UserCredentialsModel credentialModel)
         {
             var query = @"INSERT INTO MedPractice.usercredentials(username, password)

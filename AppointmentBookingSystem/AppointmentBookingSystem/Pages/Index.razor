@@ -1,3 +1,12 @@
 ﻿@page "/"
 
 <h1>Patient Booking System</h1>
+<AuthorizeView>
+    <Authorized>
+        <p>Hello, @context.User.Identity.Name</p>
+    </Authorized>
+    <NotAuthorized>
+        <p>Please sign in.</p>
+        <RedirectToLogin />
+    </NotAuthorized>
+</AuthorizeView>

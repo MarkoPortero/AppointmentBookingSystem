@@ -1,3 +1,6 @@
+using Blazored.SessionStorage;
+using Microsoft.AspNetCore.Components.Authorization;
+
 namespace AppointmentBookingSystem
 {
     using AppointmentBookingSystemDAL;
@@ -18,11 +21,13 @@ namespace AppointmentBookingSystem
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        // This method gets called by the runtime, adds services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
+            services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
+            services.AddBlazoredSessionStorage();
             services.AddTransient<ISqlDataAccess, SqlDataAccess>();
             services.AddTransient<IPatientData, PatientData>();
             services.AddTransient<IStaffData, StaffData>();
@@ -31,7 +36,7 @@ namespace AppointmentBookingSystem
             services.AddTransient<IAppointmentData, AppointmentData>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        // This method gets called by the runtime - configures the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -46,8 +51,9 @@ namespace AppointmentBookingSystem
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

@@ -110,6 +110,20 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
         {
         }
         #pragma warning restore 1998
+#nullable restore
+#line 27 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Shared\MainLayout.razor"
+ 
+    public void Logout()
+    {
+        ((CustomAuthenticationStateProvider)AuthenticationStateProvider).LogoutUser();
+        NavigationManager.NavigateTo("/");
+    }
+
+#line default
+#line hidden
+#nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager NavigationManager { get; set; }
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private AuthenticationStateProvider AuthenticationStateProvider { get; set; }
     }
 }
 #pragma warning restore 1591

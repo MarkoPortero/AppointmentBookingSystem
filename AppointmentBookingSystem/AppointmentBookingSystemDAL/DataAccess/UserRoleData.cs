@@ -28,5 +28,17 @@ namespace AppointmentBookingSystemDAL.DataAccess
 
             return _dataAccess.LoadData<UserRolesModel, dynamic>(query, new { credentialId });
         }
+
+
+        public Task<List<UserRolesModel>> GetUserRoleFromLogin(int id)
+        {
+            const string query = @"SELECT MedPractice.userRole.ID, userRole
+                                   FROM MedPractice.userRole
+                                   INNER JOIN MedPractice.staff
+                                   ON MedPractice.staff.RoleId = userRole.ID
+                                   WHERE MedPractice.staff.UserId = @userId";
+
+            return _dataAccess.LoadData<UserRolesModel, dynamic>(query, new { userId = id });
+        }
     }
 }

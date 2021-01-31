@@ -1,0 +1,46 @@
+﻿@page "/Login"
+@inject IUserCredentialsData UserCredentialsDatabase
+@inject IUserRoleData UserRoleData
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JsRuntime
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+
+<h1>Login</h1>
+<EditForm Model="_credentialsModel" OnValidSubmit="@UserLogin">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="form-group">
+        <InputText id="Username" @bind-Value="_credentialsModel.UserName" placeholder="UserName"/>
+    </div>
+    <div class="form-group">
+        <InputText id="Password" type=password @bind-Value="_credentialsModel.Password" placeholder="Password"/>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Login</button>
+</EditForm>
+@code {
+    UserCredentialsModel _credentialsModel = new UserCredentialsModel();
+    private List<UserCredentialsModel> Credentials { get; set; }
+
+    private async Task UserLogin()
+    {
+        Task.WaitAll();
+        Credentials = await UserCredentialsDatabase.GetCredentialFromLogin(_credentialsModel.UserName, _credentialsModel.Password);
+
+        if (Credentials.Any())
+        {
+            List<UserRolesModel> role = await UserRoleData.GetUserRoleFromLogin(Credentials.First().Id);
+            ((CustomAuthenticationStateProvider)AuthenticationStateProvider).AuthenticateUser(Credentials.First().Id, _credentialsModel.UserName, role.First().UserRole);
+
+            await sessionStorage.SetItemAsync("userId", Credentials.First().Id.ToString());
+            await sessionStorage.SetItemAsync("userName", _credentialsModel.UserName);
+            await sessionStorage.SetItemAsync("role", role.First().UserRole);
+
+            NavigationManager.NavigateTo("/");
+            return;
+        }
+        await JsRuntime.InvokeVoidAsync("alert", $"Please enter valid login credentials");
+        _credentialsModel = new UserCredentialsModel();
+    }
+}

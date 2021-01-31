@@ -103,6 +103,13 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 9 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\AppointmentData\Appointments.razor"
+           [Authorize]
+
+#line default
+#line hidden
+#nullable disable
     [Microsoft.AspNetCore.Components.RouteAttribute("/Appointments")]
     public partial class Appointments : Microsoft.AspNetCore.Components.ComponentBase
     {
@@ -112,12 +119,21 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 52 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\AppointmentData\Appointments.razor"
+#line 56 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\AppointmentData\Appointments.razor"
        
     private List<AppointmentModel> _appointments;
     protected override async Task OnInitializedAsync()
     {
-        _appointments = await AppointmentDatabase.GetAllAppointments();
+        var role = await sessionStorage.GetItemAsync<string>("role");
+        if (role == "Medical Practitioner")
+        {
+            var id = await sessionStorage.GetItemAsync<string>("userId");
+            _appointments = await AppointmentDatabase.GetAllAppointmentsForStaffMemberFromCredentials(int.Parse(id));
+        }
+        else
+        {
+            _appointments = await AppointmentDatabase.GetAllAppointments();
+        }
     }
 
     private void EditAppointment(int appointmentId)
@@ -127,7 +143,7 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
 
     private async Task DeleteAppointment(AppointmentModel appointment)
     {
-        if(!await JsRuntime.InvokeAsync<bool>("confirm", $"Are you sure you want to delete the appointment for '{appointment.PatientFirstname} {appointment.PatientLastname}'?"))
+        if (!await JsRuntime.InvokeAsync<bool>("confirm", $"Are you sure you want to delete the appointment for '{appointment.PatientFirstname} {appointment.PatientLastname}'?"))
             return;
         await AppointmentDatabase.DeleteAppointment(appointment.Id);
 
@@ -137,6 +153,7 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
 #line default
 #line hidden
 #nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private Blazored.SessionStorage.ISessionStorageService sessionStorage { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager NavigationManager { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private IJSRuntime JsRuntime { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private IAppointmentData AppointmentDatabase { get; set; }

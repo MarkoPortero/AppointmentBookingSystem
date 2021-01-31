@@ -8,5 +8,6 @@ namespace AppointmentBookingSystemDAL.DataAccess.Interfaces
     {
         Task<List<UserRolesModel>> GetAllUserRoles();
         Task<List<UserRolesModel>> GetUserRole(int userRoleId);
+        Task<List<UserRolesModel>> GetUserRoleFromLogin(int id);
     }
 }

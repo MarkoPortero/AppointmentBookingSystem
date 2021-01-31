@@ -9,6 +9,7 @@ namespace AppointmentBookingSystemDAL.DataAccess.Interfaces
         Task<List<AppointmentModel>> GetAllAppointments();
         Task<List<AppointmentModel>> GetAllAppointmentsForPatient(int patientId);
         Task<List<AppointmentModel>> GetAllAppointmentsForStaffMember(int staffId);
+        Task<List<AppointmentModel>> GetAllAppointmentsForStaffMemberFromCredentials(int credentialId);
         Task<List<AppointmentModel>> GetAppointment(int appointmentId);
         Task InsertAppointment(AppointmentModel appointment);
         Task UpdateAppointment(AppointmentModel appointment);

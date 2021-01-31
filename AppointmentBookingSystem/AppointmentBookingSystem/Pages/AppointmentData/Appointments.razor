@@ -3,11 +3,15 @@
 @inject IAppointmentData AppointmentDatabase
 @inject IJSRuntime JsRuntime
 @inject NavigationManager NavigationManager
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+
 <h1>Appointments</h1>
+@attribute [Authorize]
 
-<h4>Add new appointment</h4>
-<a class="btn btn-primary" href="/AppointmentData/AppointmentAdd" role="button">Add Appointment</a>
-
+<AuthorizeView roles="Administrator, Receptionist">
+    <h4>Add new appointment</h4>
+    <a class="btn btn-primary" href="/AppointmentData/AppointmentAdd" role="button">Add Appointment</a>
+</AuthorizeView>
 <h4 class="p-3">Current Appointments</h4>
 
 @if (_appointments is null)
@@ -41,8 +45,8 @@ else
                     <td>@appointment.StaffFirstName @appointment.StaffLastName</td>
 
                     <td>
-                        <button class="btn-secondary" @onclick="() => EditAppointment(appointment.Id)">Edit</button>
-                        <button class="btn-secondary" @onclick="() => DeleteAppointment(appointment)">Delete</button>
+                        <button class="btn-primary" @onclick="() => EditAppointment(appointment.Id)">Edit</button>
+                        <button class="btn-primary" @onclick="() => DeleteAppointment(appointment)">Delete</button>
                     </td>
                 </tr>
             }
@@ -53,7 +57,16 @@ else
     private List<AppointmentModel> _appointments;
     protected override async Task OnInitializedAsync()
     {
-        _appointments = await AppointmentDatabase.GetAllAppointments();
+        var role = await sessionStorage.GetItemAsync<string>("role");
+        if (role == "Medical Practitioner")
+        {
+            var id = await sessionStorage.GetItemAsync<string>("userId");
+            _appointments = await AppointmentDatabase.GetAllAppointmentsForStaffMemberFromCredentials(int.Parse(id));
+        }
+        else
+        {
+            _appointments = await AppointmentDatabase.GetAllAppointments();
+        }
     }
 
     private void EditAppointment(int appointmentId)
@@ -63,7 +76,7 @@ else
 
     private async Task DeleteAppointment(AppointmentModel appointment)
     {
-        if(!await JsRuntime.InvokeAsync<bool>("confirm", $"Are you sure you want to delete the appointment for '{appointment.PatientFirstname} {appointment.PatientLastname}'?"))
+        if (!await JsRuntime.InvokeAsync<bool>("confirm", $"Are you sure you want to delete the appointment for '{appointment.PatientFirstname} {appointment.PatientLastname}'?"))
             return;
         await AppointmentDatabase.DeleteAppointment(appointment.Id);
 

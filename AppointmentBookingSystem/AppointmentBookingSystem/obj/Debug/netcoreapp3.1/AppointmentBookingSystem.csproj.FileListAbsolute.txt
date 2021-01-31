@@ -134,3 +134,16 @@ C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\ob
 C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\obj\Debug\netcoreapp3.1\Razor\Pages\AppointmentData\AppointmentEdit.razor.g.cs
 C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\PatientNotesData\PatientNotes.razor.g.cs
 C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\obj\Debug\netcoreapp3.1\Razor\Pages\PatientNotesData\PatientNotes.razor.g.cs
+C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\Login.razor.g.cs
+C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\obj\Debug\netcoreapp3.1\Razor\Pages\Login.razor.g.cs
+C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\bin\Debug\netcoreapp3.1\Blazored.SessionStorage.dll
+C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authorization.dll
+C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Components.dll
+C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Components.Forms.dll
+C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Components.Web.dll
+C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Metadata.dll
+C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\bin\Debug\netcoreapp3.1\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\bin\Debug\netcoreapp3.1\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Options.dll
+C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\bin\Debug\netcoreapp3.1\Microsoft.JSInterop.dll
