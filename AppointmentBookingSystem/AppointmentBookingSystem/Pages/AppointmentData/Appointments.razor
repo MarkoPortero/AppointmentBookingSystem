@@ -35,20 +35,23 @@ else
         <tbody>
             @foreach (AppointmentModel appointment in _appointments)
             {
-                <tr>
-                    <td>@appointment.Id</td>
-                    <td>@appointment.PatientId</td>
-                    <td>@appointment.StaffId</td>
-                    <td>@appointment.AppointmentDateTime</td>
-                    <td>@appointment.AppointmentDuration</td>
-                    <td>@appointment.PatientFirstname @appointment.PatientLastname</td>
-                    <td>@appointment.StaffFirstName @appointment.StaffLastName</td>
+                if (appointment.AppointmentDateTime > DateTime.Now)
+                {
+                    <tr>
+                        <td>@appointment.Id</td>
+                        <td>@appointment.PatientId</td>
+                        <td>@appointment.StaffId</td>
+                        <td>@appointment.AppointmentDateTime</td>
+                        <td>@appointment.AppointmentDuration</td>
+                        <td>@appointment.PatientFirstname @appointment.PatientLastname</td>
+                        <td>@appointment.StaffFirstName @appointment.StaffLastName</td>
 
-                    <td>
-                        <button class="btn-primary" @onclick="() => EditAppointment(appointment.Id)">Edit</button>
-                        <button class="btn-primary" @onclick="() => DeleteAppointment(appointment)">Delete</button>
-                    </td>
-                </tr>
+                        <td>
+                            <button class="btn-primary" @onclick="() => EditAppointment(appointment.Id)">Edit</button>
+                            <button class="btn-primary" @onclick="() => DeleteAppointment(appointment)">Delete</button>
+                        </td>
+                    </tr>
+                }
             }
         </tbody>
     </table>

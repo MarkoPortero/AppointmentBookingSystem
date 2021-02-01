@@ -1,12 +1,9 @@
-﻿
-using System;
-
-namespace AppointmentBookingSystemDAL.DataAccess
+﻿namespace AppointmentBookingSystemDAL.DataAccess
 {
+    using AppointmentBookingSystemDAL.DataAccess.Interfaces;
+    using AppointmentBookingSystemDAL.Models;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using AppointmentBookingSystemDAL.Models;
-    using AppointmentBookingSystemDAL.DataAccess.Interfaces;
 
     public class AppointmentData : IAppointmentData
     {
@@ -21,8 +18,9 @@ namespace AppointmentBookingSystemDAL.DataAccess
         {
             const string query = @"SELECT MedPractice.appointment.ID, MedPractice.appointment.staffId,  
                                           MedPractice.appointment.patientId, MedPractice.appointment.appointmentDatetime, 
-                                          MedPractice.appointment.appointmentDuration, MedPractice.patient.FirstName AS PatientFirstname, MedPractice.patient.LastName AS PatientLastname,
-                                          MedPractice.staff.FirstName AS StaffFirstName, MedPractice.staff.LastName AS StaffLastName
+                                          MedPractice.appointment.appointmentDuration, MedPractice.patient.FirstName AS PatientFirstname, 
+                                          MedPractice.patient.LastName AS PatientLastname, MedPractice.staff.FirstName AS StaffFirstName, 
+                                          MedPractice.staff.LastName AS StaffLastName
                                    FROM MedPractice.appointment
                                    INNER JOIN MedPractice.patient
                                    ON appointment.patientId = MedPractice.patient.ID
@@ -93,8 +91,10 @@ namespace AppointmentBookingSystemDAL.DataAccess
         public Task UpdateAppointment(AppointmentModel appointment)
         {
             const string query = @"UPDATE MedPractice.appointment
-                                   SET staffID=@staffID, patientId=@patientId, 
-                                       appointmentDatetime=@appointmentDatetime, appointmentDuration=@appointmentDuration
+                                   SET staffID=@staffID, 
+                                       patientId=@patientId, 
+                                       appointmentDatetime=@appointmentDatetime, 
+                                       appointmentDuration=@appointmentDuration
                                    WHERE ID = @ID";
 
             return _dataAccess.SaveData(query, new
@@ -110,6 +110,9 @@ namespace AppointmentBookingSystemDAL.DataAccess
         public Task DeleteAppointment(int appointmentId)
         {
             var query = @"DELETE 
+                          FROM MedPractice.patientNotes
+                          WHERE MedPractice.patientNotes.appointmentId = @appointmentId;
+                          DELETE 
                           FROM MedPractice.appointment 
                           WHERE MedPractice.appointment.ID = @appointmentId";
 

@@ -4,7 +4,7 @@
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JsRuntime
 @inject AuthenticationStateProvider AuthenticationStateProvider
-@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+@inject Blazored.SessionStorage.ISessionStorageService SessionStorage
 
 <h1>Login</h1>
 <EditForm Model="_credentialsModel" OnValidSubmit="@UserLogin">
@@ -33,9 +33,9 @@
             List<UserRolesModel> role = await UserRoleData.GetUserRoleFromLogin(Credentials.First().Id);
             ((CustomAuthenticationStateProvider)AuthenticationStateProvider).AuthenticateUser(Credentials.First().Id, _credentialsModel.UserName, role.First().UserRole);
 
-            await sessionStorage.SetItemAsync("userId", Credentials.First().Id.ToString());
-            await sessionStorage.SetItemAsync("userName", _credentialsModel.UserName);
-            await sessionStorage.SetItemAsync("role", role.First().UserRole);
+            await SessionStorage.SetItemAsync("userId", Credentials.First().Id.ToString());
+            await SessionStorage.SetItemAsync("userName", _credentialsModel.UserName);
+            await SessionStorage.SetItemAsync("role", role.First().UserRole);
 
             NavigationManager.NavigateTo("/");
             return;

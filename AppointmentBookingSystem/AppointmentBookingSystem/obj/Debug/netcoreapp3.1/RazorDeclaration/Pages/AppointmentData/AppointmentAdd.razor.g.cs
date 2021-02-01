@@ -103,6 +103,13 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 7 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\AppointmentData\AppointmentAdd.razor"
+           [Authorize(Roles = "Administrator, Receptionist")]
+
+#line default
+#line hidden
+#nullable disable
     [Microsoft.AspNetCore.Components.RouteAttribute("/AppointmentData/AppointmentAdd")]
     public partial class AppointmentAdd : Microsoft.AspNetCore.Components.ComponentBase
     {
@@ -112,11 +119,12 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 57 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\AppointmentData\AppointmentAdd.razor"
+#line 61 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\AppointmentData\AppointmentAdd.razor"
        
     AppointmentModel _appointmentModel = new AppointmentModel();
     private List<StaffModel> StaffMembers { get; set; }
     private List<PatientModel> Patients { get; set; }
+    private List<AppointmentModel> Appointments { get; set; }
     private string SelectedPatient { get; set; }
     private string StaffMember { get; set; }
     private string Duration { get; set; } = "15";
@@ -125,6 +133,7 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
     {
         StaffMembers = await StaffDatabase.GetAllStaff();
         Patients = await PatientDatabase.GetAllPatients();
+        Appointments = await AppointmentDatabase.GetAllAppointments();
     }
 
     private void BackToAppointments()
@@ -149,7 +158,7 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
 
         if (!int.TryParse(patientDetails[0], out int patientId))
         {
-           await JsRuntime.InvokeVoidAsync("alert", $"Please select a valid Patient");
+            await JsRuntime.InvokeVoidAsync("alert", $"Please select a valid Patient");
             return;
         }
         if (!int.TryParse(staffDetails[0], out int staffId))
@@ -160,9 +169,34 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
         _appointmentModel.PatientId = patientId;
         _appointmentModel.StaffId = staffId;
         _appointmentModel.AppointmentDuration = int.Parse(Duration);
+
+        if (Appointments != null)
+        {
+            var currentAppointments = Appointments.Where(x => x.StaffId == staffId || x.PatientId == patientId);
+            var scheduledAppointmentEndTime = _appointmentModel.AppointmentDateTime.AddMinutes(_appointmentModel.AppointmentDuration);
+
+            foreach (var appointment in currentAppointments)
+            {
+                var endTime = appointment.AppointmentDateTime.AddMinutes(appointment.AppointmentDuration);
+                var isStartDateTimeValid = DateTimeRangeCheck(_appointmentModel.AppointmentDateTime, appointment.AppointmentDateTime, endTime);
+                var isAppointmentDurationValid = DateTimeRangeCheck(scheduledAppointmentEndTime, appointment.AppointmentDateTime, endTime);
+                if (isStartDateTimeValid || isAppointmentDurationValid)
+                {
+                    await JsRuntime.InvokeVoidAsync("alert", $"This appointment conflicts with another appointment.");
+                    return;
+                }
+            }
+        }
+
         await AppointmentDatabase.InsertAppointment(_appointmentModel);
         BackToAppointments();
-    //TODO - ADD VALIDATION CALL TO CHECK IF APPOINTMENT IS VALID TO MAKE AT TIME OF CREATION I.E THE APPOINTMENT WILL NOT OVERLAP WITH ANY OF THE STAFF OR PATIENTS OTHER APPOINTMENTS
+        //TODO - ADD VALIDATION CALL TO CHECK IF APPOINTMENT IS VALID TO MAKE AT TIME OF CREATION
+        //I.E THE APPOINTMENT WILL NOT OVERLAP WITH ANY OF THE STAFF OR PATIENTS OTHER APPOINTMENTS
+    }
+
+    private bool DateTimeRangeCheck(DateTime proposedAppointment, DateTime startTime, DateTime endTime)
+    {
+        return proposedAppointment >= startTime && proposedAppointment < endTime;
     }
 
 #line default

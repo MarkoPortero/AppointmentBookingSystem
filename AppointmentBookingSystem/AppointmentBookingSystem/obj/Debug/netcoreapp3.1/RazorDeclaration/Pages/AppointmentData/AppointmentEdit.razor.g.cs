@@ -112,13 +112,14 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 44 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\AppointmentData\AppointmentEdit.razor"
+#line 45 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\AppointmentData\AppointmentEdit.razor"
        
     [Parameter]
     public string AppointmentId { get; set; }
     AppointmentModel _appointmentModel = new AppointmentModel();
     private List<StaffModel> StaffMembers { get; set; }
     private List<PatientModel> Patients { get; set; }
+    private List<AppointmentModel> Appointments { get; set; }
     private string SelectedPatient { get; set; }
     private string StaffMember { get; set; }
     private string Duration { get; set; }
@@ -126,16 +127,26 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
     protected override async Task OnInitializedAsync()
     {
         var appointmentId = int.Parse(AppointmentId);
-        var data = await AppointmentDatabase.GetAppointment(appointmentId);
-        _appointmentModel = data.FirstOrDefault();
+        try
+        {
+            StaffMembers = await StaffDatabase.GetAllStaff();
+            Patients = await PatientDatabase.GetAllPatients();
+            Appointments = await AppointmentDatabase.GetAllAppointments();
+            var data = await AppointmentDatabase.GetAppointment(appointmentId);
+            _appointmentModel = data.FirstOrDefault();
+        }
+        catch (ArgumentNullException)
+        {
+
+        }
+
         if (_appointmentModel != null)
         {
             StaffMember = $"{_appointmentModel.StaffId} {_appointmentModel.StaffFirstName} {_appointmentModel.StaffLastName}";
             SelectedPatient = $"{_appointmentModel.PatientId} {_appointmentModel.PatientFirstname} {_appointmentModel.PatientLastname}";
             Duration = _appointmentModel.AppointmentDuration.ToString();
         }
-        StaffMembers = await StaffDatabase.GetAllStaff();
-        Patients = await PatientDatabase.GetAllPatients();
+
     }
 
     private async Task EditAppointment()
@@ -167,6 +178,28 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
         _appointmentModel.StaffId = staffId;
         _appointmentModel.AppointmentDuration = int.Parse(Duration);
 
+        if (Appointments != null)
+        {
+            var currentAppointments = Appointments.Where(x => x.StaffId == staffId || x.PatientId == patientId);
+            var scheduledAppointmentEndTime = _appointmentModel.AppointmentDateTime.AddMinutes(_appointmentModel.AppointmentDuration);
+
+            foreach (var appointment in currentAppointments)
+            {
+                if (appointment.Id == int.Parse(AppointmentId))
+                {
+                    continue;
+                }
+                var endTime = appointment.AppointmentDateTime.AddMinutes(appointment.AppointmentDuration);
+                var isStartDateTimeValid = DateTimeRangeCheck(_appointmentModel.AppointmentDateTime, appointment.AppointmentDateTime, endTime);
+                var isAppointmentDurationValid = DateTimeRangeCheck(scheduledAppointmentEndTime, appointment.AppointmentDateTime, endTime);
+                if (isStartDateTimeValid || isAppointmentDurationValid)
+                {
+                    await JsRuntime.InvokeVoidAsync("alert", $"This appointment conflicts with another appointment.");
+                    return;
+                }
+            }
+        }
+
         await AppointmentDatabase.UpdateAppointment(_appointmentModel);
         _appointmentModel = new AppointmentModel();
         BackToAppointments();
@@ -175,6 +208,11 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
     private void BackToAppointments()
     {
         NavigationManager.NavigateTo("/Appointments");
+    }
+
+    private bool DateTimeRangeCheck(DateTime proposedAppointment, DateTime startTime, DateTime endTime)
+    {
+        return proposedAppointment >= startTime && proposedAppointment < endTime;
     }
 
 #line default

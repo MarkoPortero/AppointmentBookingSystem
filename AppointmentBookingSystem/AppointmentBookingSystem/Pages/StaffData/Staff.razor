@@ -1,5 +1,5 @@
 ﻿@page "/Staff"
-
+@attribute [Authorize(Roles = "Administrator")]
 @inject NavigationManager NavigationManager
 @inject IStaffData StaffDatabase
 @inject IUserCredentialsData CredentialsDatabase

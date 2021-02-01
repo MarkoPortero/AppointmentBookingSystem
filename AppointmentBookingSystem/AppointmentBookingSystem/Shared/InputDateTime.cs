@@ -4,6 +4,11 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Rendering;
 
+/// <summary>
+/// This component does not exist yet for blazor
+/// Solution taken from the blazor github https://github.com/dotnet/aspnetcore/issues/18078
+/// </summary>
+
 namespace AppointmentBookingSystem
 {
     public class InputDateTime<TValue> : InputDate<TValue>

@@ -23,11 +23,11 @@
         [Required]
         [StringLength(12, ErrorMessage = "Phone Number is too long.")]
         [MinLength(6, ErrorMessage = "Phone Number not long enough")]
-        [RegularExpression("[0-9]+")]
+        [RegularExpression("[0-9]+", ErrorMessage = "Contact number must be numeric")]
         public string ContactNumber { get; set; }
 
         [Required]
-        [MinLength(3, ErrorMessage = "Email not long enough")]
+        [MinLength(4, ErrorMessage = "Email not long enough")]
         [EmailAddress(ErrorMessage = "Email is invalid.")]
         public string Email { get; set; }
 

@@ -103,6 +103,13 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 2 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\PatientNotesData\PatientNotes.razor"
+           [Authorize(Roles = "Medical Practitioner")]
+
+#line default
+#line hidden
+#nullable disable
     [Microsoft.AspNetCore.Components.RouteAttribute("/PatientNotes/{appointmentId}/{patientId}/{StaffId}")]
     public partial class PatientNotes : Microsoft.AspNetCore.Components.ComponentBase
     {

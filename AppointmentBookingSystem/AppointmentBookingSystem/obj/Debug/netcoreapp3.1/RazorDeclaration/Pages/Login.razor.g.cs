@@ -127,9 +127,9 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
             List<UserRolesModel> role = await UserRoleData.GetUserRoleFromLogin(Credentials.First().Id);
             ((CustomAuthenticationStateProvider)AuthenticationStateProvider).AuthenticateUser(Credentials.First().Id, _credentialsModel.UserName, role.First().UserRole);
 
-            await sessionStorage.SetItemAsync("userId", Credentials.First().Id.ToString());
-            await sessionStorage.SetItemAsync("userName", _credentialsModel.UserName);
-            await sessionStorage.SetItemAsync("role", role.First().UserRole);
+            await SessionStorage.SetItemAsync("userId", Credentials.First().Id.ToString());
+            await SessionStorage.SetItemAsync("userName", _credentialsModel.UserName);
+            await SessionStorage.SetItemAsync("role", role.First().UserRole);
 
             NavigationManager.NavigateTo("/");
             return;
@@ -141,7 +141,7 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
 #line default
 #line hidden
 #nullable disable
-        [global::Microsoft.AspNetCore.Components.InjectAttribute] private Blazored.SessionStorage.ISessionStorageService sessionStorage { get; set; }
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private Blazored.SessionStorage.ISessionStorageService SessionStorage { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private AuthenticationStateProvider AuthenticationStateProvider { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private IJSRuntime JsRuntime { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager NavigationManager { get; set; }

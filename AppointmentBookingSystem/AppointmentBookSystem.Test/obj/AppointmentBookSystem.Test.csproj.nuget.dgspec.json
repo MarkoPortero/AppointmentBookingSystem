@@ -1,0 +1,223 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\MarkP\\source\\repos\\AppointmentBookingSystem\\AppointmentBookSystem.Test\\AppointmentBookSystem.Test.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\MarkP\\source\\repos\\AppointmentBookingSystem\\AppointmentBookingSystemDAL\\AppointmentBookingSystemDAL.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\MarkP\\source\\repos\\AppointmentBookingSystem\\AppointmentBookingSystemDAL\\AppointmentBookingSystemDAL.csproj",
+        "projectName": "AppointmentBookingSystemDAL",
+        "projectPath": "C:\\Users\\MarkP\\source\\repos\\AppointmentBookingSystem\\AppointmentBookingSystemDAL\\AppointmentBookingSystemDAL.csproj",
+        "packagesPath": "C:\\Users\\MarkP\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\MarkP\\source\\repos\\AppointmentBookingSystem\\AppointmentBookingSystemDAL\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\MarkP\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netstandard2.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netstandard2.0": {
+            "targetAlias": "netstandard2.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netstandard2.0": {
+          "targetAlias": "netstandard2.0",
+          "dependencies": {
+            "Dapper": {
+              "target": "Package",
+              "version": "[2.0.78, )"
+            },
+            "Microsoft.Extensions.Configuration.Abstractions": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "NETStandard.Library": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.0.3, )",
+              "autoReferenced": true
+            },
+            "System.Data.SqlClient": {
+              "target": "Package",
+              "version": "[4.8.2, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.102\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\MarkP\\source\\repos\\AppointmentBookingSystem\\AppointmentBookingSystem\\AppointmentBookingSystem.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\MarkP\\source\\repos\\AppointmentBookingSystem\\AppointmentBookingSystem\\AppointmentBookingSystem.csproj",
+        "projectName": "AppointmentBookingSystem",
+        "projectPath": "C:\\Users\\MarkP\\source\\repos\\AppointmentBookingSystem\\AppointmentBookingSystem\\AppointmentBookingSystem.csproj",
+        "packagesPath": "C:\\Users\\MarkP\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\MarkP\\source\\repos\\AppointmentBookingSystem\\AppointmentBookingSystem\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\MarkP\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
+            "projectReferences": {
+              "C:\\Users\\MarkP\\source\\repos\\AppointmentBookingSystem\\AppointmentBookingSystemDAL\\AppointmentBookingSystemDAL.csproj": {
+                "projectPath": "C:\\Users\\MarkP\\source\\repos\\AppointmentBookingSystem\\AppointmentBookingSystemDAL\\AppointmentBookingSystemDAL.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
+          "dependencies": {
+            "AutoMapper.Extensions.Microsoft.DependencyInjection": {
+              "target": "Package",
+              "version": "[8.1.0, )"
+            },
+            "Blazored.SessionStorage": {
+              "target": "Package",
+              "version": "[1.0.13, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.102\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\MarkP\\source\\repos\\AppointmentBookingSystem\\AppointmentBookSystem.Test\\AppointmentBookSystem.Test.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\MarkP\\source\\repos\\AppointmentBookingSystem\\AppointmentBookSystem.Test\\AppointmentBookSystem.Test.csproj",
+        "projectName": "AppointmentBookSystem.Test",
+        "projectPath": "C:\\Users\\MarkP\\source\\repos\\AppointmentBookingSystem\\AppointmentBookSystem.Test\\AppointmentBookSystem.Test.csproj",
+        "packagesPath": "C:\\Users\\MarkP\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\MarkP\\source\\repos\\AppointmentBookingSystem\\AppointmentBookSystem.Test\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\MarkP\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
+            "projectReferences": {
+              "C:\\Users\\MarkP\\source\\repos\\AppointmentBookingSystem\\AppointmentBookingSystem\\AppointmentBookingSystem.csproj": {
+                "projectPath": "C:\\Users\\MarkP\\source\\repos\\AppointmentBookingSystem\\AppointmentBookingSystem\\AppointmentBookingSystem.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
+          "dependencies": {
+            "Microsoft.NET.Test.Sdk": {
+              "target": "Package",
+              "version": "[16.5.0, )"
+            },
+            "NUnit": {
+              "target": "Package",
+              "version": "[3.12.0, )"
+            },
+            "NUnit3TestAdapter": {
+              "target": "Package",
+              "version": "[3.16.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.102\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

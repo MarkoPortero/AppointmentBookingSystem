@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppointmentBookingSystem", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppointmentBookingSystemDAL", "AppointmentBookingSystemDAL\AppointmentBookingSystemDAL.csproj", "{D6E68B74-B0D7-4B0E-B588-39ED0AAFF60B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppointmentBookSystem.Test", "AppointmentBookSystem.Test\AppointmentBookSystem.Test.csproj", "{7C308056-AE4D-418D-8335-E50763D56A42}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{D6E68B74-B0D7-4B0E-B588-39ED0AAFF60B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D6E68B74-B0D7-4B0E-B588-39ED0AAFF60B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D6E68B74-B0D7-4B0E-B588-39ED0AAFF60B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C308056-AE4D-418D-8335-E50763D56A42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C308056-AE4D-418D-8335-E50763D56A42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C308056-AE4D-418D-8335-E50763D56A42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C308056-AE4D-418D-8335-E50763D56A42}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

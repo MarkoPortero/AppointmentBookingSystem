@@ -103,6 +103,13 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 2 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\StaffData\StaffAdd.razor"
+           [Authorize(Roles = "Administrator")]
+
+#line default
+#line hidden
+#nullable disable
     [Microsoft.AspNetCore.Components.RouteAttribute("/StaffData/StaffAdd")]
     public partial class StaffAdd : Microsoft.AspNetCore.Components.ComponentBase
     {

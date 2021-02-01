@@ -1,5 +1,5 @@
 ﻿@page "/PatientNotes/{appointmentId}/{patientId}/{StaffId}"
-
+@attribute [Authorize(Roles = "Medical Practitioner")]
 @inject NavigationManager NavigationManager
 @inject IPatientNotesData PatientNotesDatabase
 @inject IStaffData StaffDatabase
@@ -10,7 +10,7 @@
     </div>
     <div class="form-group">
         <label class="col-sm-2 col-form-label">Patient Notes</label>
-        <InputTextArea class="col-lg-6" id="PatientNotes" @bind-Value="PatientNotesModel.PatientNotes"/>
+        <InputTextArea class="col-lg-6" id="PatientNotes" @bind-Value="PatientNotesModel.PatientNotes" />
     </div>
     <button type="submit" class="btn btn-primary">Save Note</button>
     <button type="button" class="btn btn-primary" @onclick="NavigateToPatientHistory">Back</button>

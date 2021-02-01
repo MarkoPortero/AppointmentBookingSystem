@@ -119,7 +119,7 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 61 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\AppointmentData\AppointmentHistory.razor"
+#line 64 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\AppointmentData\AppointmentHistory.razor"
        
     private AppointmentModel _appointment = new AppointmentModel();
     private List<AppointmentModel> _appointments;

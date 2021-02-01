@@ -30,7 +30,6 @@ else
                 <tr>
                     <th>Appointment Id</th>
                     <th>Patient Id</th>
-                    <th>Staff Id</th>
                     <th>Appointment DateTime</th>
                     <th>Appointment Duration</th>
                     <th>Patient Name</th>
@@ -41,17 +40,21 @@ else
                 {
                     if (appointment.PatientId == PatientId)
                     {
-                        <tr>
-                            <td>@appointment.Id</td>
-                            <td>@appointment.PatientId</td>
-                            <td>@appointment.AppointmentDateTime</td>
-                            <td>@appointment.AppointmentDuration</td>
-                            <td>@appointment.PatientFirstname @appointment.PatientLastname</td>
+                        if (appointment.AppointmentDateTime <= DateTime.Now)
+                        {
+                            <tr>
+                                <td>@appointment.Id</td>
+                                <td>@appointment.PatientId</td>
+                                <td>@appointment.AppointmentDateTime</td>
+                                <td>@appointment.AppointmentDuration</td>
+                                <td>@appointment.PatientFirstname @appointment.PatientLastname</td>
 
-                            <td>
-                                <button class="btn-primary" @onclick="() => ViewNotes(appointment.Id, PatientId)">View Notes</button>
-                            </td>
-                        </tr>
+                                <td>
+                                    <button class="btn-primary" @onclick="() => ViewNotes(appointment.Id, PatientId)">View Notes</button>
+                                </td>
+                            </tr>
+                        }
+
                     }
                 }
             </tbody>

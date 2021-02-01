@@ -103,6 +103,13 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 5 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\PatientData\Patient.razor"
+           [Authorize(Roles = "Administrator, Receptionist")]
+
+#line default
+#line hidden
+#nullable disable
     [Microsoft.AspNetCore.Components.RouteAttribute("/Patients")]
     public partial class Patient : Microsoft.AspNetCore.Components.ComponentBase
     {
@@ -122,7 +129,7 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
 
     private async Task DeletePatient(PatientModel patient)
     {
-        if(!await JsRuntime.InvokeAsync<bool>("confirm", $"Are you sure you want to delete the patient '{patient.FirstName} {patient.LastName}'?"))
+        if (!await JsRuntime.InvokeAsync<bool>("confirm", $"Are you sure you want to delete the patient '{patient.FirstName} {patient.LastName}'?"))
             return;
         await Database.DeletePatient(patient.Id);
 

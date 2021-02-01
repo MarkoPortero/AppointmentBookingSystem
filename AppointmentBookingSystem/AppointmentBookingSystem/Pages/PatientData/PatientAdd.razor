@@ -2,7 +2,7 @@
 
 @inject IPatientData Database
 @inject NavigationManager NavigationManager
-
+@attribute [Authorize(Roles = "Administrator, Receptionist")]
 <h1>Patient</h1>
 
 <h4>Insert new patient</h4>
