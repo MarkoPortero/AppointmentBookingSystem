@@ -1,4 +1,8 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=f9b1b84d_002Dce96_002D40c2_002D8725_002D721dd9f35fd1/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Test1" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;Project Location="C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookSystem.Test" Presentation="&amp;lt;AppointmentBookSystem.Test&amp;gt;" /&gt;&#xD;
-&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=817e51a4_002D5aac_002D4aee_002D932a_002D1de976ca2224/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="PatientTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::7C308056-AE4D-418D-8335-E50763D56A42::.NETCoreApp,Version=v3.1::AppointmentBookSystem.Test.Pages.PatientTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::7C308056-AE4D-418D-8335-E50763D56A42::.NETCoreApp,Version=v3.1::AppointmentBookSystem.Test.Pages.PatientAddTests&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	</wpf:ResourceDictionary>

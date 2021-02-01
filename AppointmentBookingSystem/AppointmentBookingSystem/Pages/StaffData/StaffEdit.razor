@@ -4,6 +4,7 @@
 @inject IStaffData StaffDatabase
 @inject IUserCredentialsData CredentialsDatabase
 @inject IUserRoleData UserRoleDatabase
+@inject ILogger<StaffEdit> Logger;
 
 @if (StaffViewModel is null)
 {
@@ -57,11 +58,19 @@ else
     private UserCredentialsModel Credentials { get; set; }
     private UserRolesModel UserRole { get; set; }
     private List<UserRolesModel> UserRoles { get; set; }
+    private List<StaffModel> _staffData;
 
     protected override async Task OnInitializedAsync()
     {
-        var staffData = await StaffDatabase.GetStaff(int.Parse(StaffId));
-        StaffMember = staffData.FirstOrDefault();
+        try
+        {
+            _staffData = await StaffDatabase.GetStaff(int.Parse(StaffId));
+        }
+        catch (SqlException ex)
+        {
+            Logger.LogError("Error loading information from server", ex);
+        }
+        StaffMember = _staffData.FirstOrDefault();
         if (StaffMember != null)
         {
             var credentialData = await CredentialsDatabase.GetCredential(StaffMember.UserId);
@@ -69,12 +78,20 @@ else
         }
         else
         {
+            Logger.LogError("Staff Member returned as null", nameof(StaffMember));
             throw new ArgumentNullException(nameof(StaffMember));
         }
-        var userRoleData = await UserRoleDatabase.GetUserRole(StaffMember.RoleId);
-        UserRole = userRoleData.FirstOrDefault();
-        UserRoles = await UserRoleDatabase.GetAllUserRoles();
-        StaffViewModel = MapStaffViewModel(StaffMember);
+        try
+        {
+            var userRoleData = await UserRoleDatabase.GetUserRole(StaffMember.RoleId);
+            UserRole = userRoleData.FirstOrDefault();
+            UserRoles = await UserRoleDatabase.GetAllUserRoles();
+            StaffViewModel = MapStaffViewModel(StaffMember);
+        }
+        catch (SqlException ex)
+        {
+            Logger.LogError("Error loading information from server", ex);
+        }
     }
 
     private StaffViewModel MapStaffViewModel(StaffModel staff)
@@ -113,11 +130,18 @@ else
             UserId = StaffMember.UserId
         };
 
-        await CredentialsDatabase.UpdateCredentials(credentials);
-        await StaffDatabase.UpdateStaff(staffMember);
-        //wipe out staff model
-        StaffViewModel = new StaffViewModel();
-        BackToStaff();
+        try
+        {
+            await CredentialsDatabase.UpdateCredentials(credentials);
+            await StaffDatabase.UpdateStaff(staffMember);
+            //wipe out staff model
+            StaffViewModel = new StaffViewModel();
+            BackToStaff();
+        }
+        catch (SqlException ex)
+        {
+            Logger.LogError("Error loading information from server", ex);
+        }
     }
 
     private void BackToStaff()

@@ -1,9 +1,11 @@
 ﻿@page "/AppointmentData/AppointmentEdit/{AppointmentId}"
+
 @inject NavigationManager NavigationManager
 @inject IStaffData StaffDatabase
 @inject IPatientData PatientDatabase
 @inject IAppointmentData AppointmentDatabase
 @inject IJSRuntime JsRuntime
+@inject ILogger<AppointmentEdit> Logger;
 
 <h3>AppointmentEdit</h3>
 
@@ -64,9 +66,9 @@ else
             var data = await AppointmentDatabase.GetAppointment(appointmentId);
             _appointmentModel = data.FirstOrDefault();
         }
-        catch (ArgumentNullException)
+        catch (SqlException ex)
         {
-
+            Logger.LogError("Error loading information from server", ex);
         }
 
         if (_appointmentModel != null)
@@ -103,6 +105,13 @@ else
             await JsRuntime.InvokeVoidAsync("alert", $"Please select a valid Staff Member");
             return;
         }
+
+        if (_appointmentModel.AppointmentDateTime < DateTime.Now)
+        {
+            await JsRuntime.InvokeVoidAsync("alert", $"Appointment cannot be made in the past");
+            return;
+        }
+
         _appointmentModel.PatientId = patientId;
         _appointmentModel.StaffId = staffId;
         _appointmentModel.AppointmentDuration = int.Parse(Duration);
@@ -128,8 +137,15 @@ else
                 }
             }
         }
-
-        await AppointmentDatabase.UpdateAppointment(_appointmentModel);
+        try
+        {
+            Logger.LogInformation("Saving new Appointment ", _appointmentModel);
+            await AppointmentDatabase.UpdateAppointment(_appointmentModel);
+        }
+        catch (SqlException ex)
+        {
+            Logger.LogError("Error writing to database", ex);
+        }
         _appointmentModel = new AppointmentModel();
         BackToAppointments();
     }

@@ -103,6 +103,20 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 14 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\_Imports.razor"
+using Microsoft.Extensions.Logging;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 15 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\_Imports.razor"
+using System.Data.SqlClient;
+
+#line default
+#line hidden
+#nullable disable
     [Microsoft.AspNetCore.Components.RouteAttribute("/Login")]
     public partial class Login : Microsoft.AspNetCore.Components.ComponentBase
     {
@@ -112,7 +126,7 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 22 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\Login.razor"
+#line 23 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\Login.razor"
        
     UserCredentialsModel _credentialsModel = new UserCredentialsModel();
     private List<UserCredentialsModel> Credentials { get; set; }
@@ -120,17 +134,34 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
     private async Task UserLogin()
     {
         Task.WaitAll();
-        Credentials = await UserCredentialsDatabase.GetCredentialFromLogin(_credentialsModel.UserName, _credentialsModel.Password);
+        try
+        {
+            Credentials = await UserCredentialsDatabase.GetCredentialFromLogin(_credentialsModel.UserName, _credentialsModel.Password);
+        }
+        catch (SqlException ex)
+        {
+            Logger.LogError("Error loading information from server", ex);
+        }
 
         if (Credentials.Any())
         {
-            List<UserRolesModel> role = await UserRoleData.GetUserRoleFromLogin(Credentials.First().Id);
-            ((CustomAuthenticationStateProvider)AuthenticationStateProvider).AuthenticateUser(Credentials.First().Id, _credentialsModel.UserName, role.First().UserRole);
+            try
+            {
+                List<UserRolesModel> role = await UserRoleData.GetUserRoleFromLogin(Credentials.First().Id);
+                ((CustomAuthenticationStateProvider) AuthenticationStateProvider).AuthenticateUser(Credentials.First().Id, _credentialsModel.UserName, role.First().UserRole);
 
-            await SessionStorage.SetItemAsync("userId", Credentials.First().Id.ToString());
-            await SessionStorage.SetItemAsync("userName", _credentialsModel.UserName);
-            await SessionStorage.SetItemAsync("role", role.First().UserRole);
-
+                await SessionStorage.SetItemAsync("userId", Credentials.First().Id.ToString());
+                await SessionStorage.SetItemAsync("userName", _credentialsModel.UserName);
+                await SessionStorage.SetItemAsync("role", role.First().UserRole);
+            }
+            catch (SqlException ex)
+            {
+                Logger.LogError("Error loading information from server" + ex);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError("Caught exception on login", ex);
+            }
             NavigationManager.NavigateTo("/");
             return;
         }
@@ -141,6 +172,7 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
 #line default
 #line hidden
 #nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private ILogger<Login> Logger { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private Blazored.SessionStorage.ISessionStorageService SessionStorage { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private AuthenticationStateProvider AuthenticationStateProvider { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private IJSRuntime JsRuntime { get; set; }

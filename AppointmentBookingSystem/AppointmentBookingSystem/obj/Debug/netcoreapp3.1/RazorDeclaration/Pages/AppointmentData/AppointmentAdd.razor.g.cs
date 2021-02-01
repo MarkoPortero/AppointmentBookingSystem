@@ -104,7 +104,21 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
 #line hidden
 #nullable disable
 #nullable restore
-#line 7 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\AppointmentData\AppointmentAdd.razor"
+#line 14 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\_Imports.razor"
+using Microsoft.Extensions.Logging;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 15 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\_Imports.razor"
+using System.Data.SqlClient;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 9 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\AppointmentData\AppointmentAdd.razor"
            [Authorize(Roles = "Administrator, Receptionist")]
 
 #line default
@@ -119,7 +133,7 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 61 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\AppointmentData\AppointmentAdd.razor"
+#line 63 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\AppointmentData\AppointmentAdd.razor"
        
     AppointmentModel _appointmentModel = new AppointmentModel();
     private List<StaffModel> StaffMembers { get; set; }
@@ -131,9 +145,16 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
 
     protected override async Task OnInitializedAsync()
     {
-        StaffMembers = await StaffDatabase.GetAllStaff();
-        Patients = await PatientDatabase.GetAllPatients();
-        Appointments = await AppointmentDatabase.GetAllAppointments();
+        try
+        {
+            StaffMembers = await StaffDatabase.GetAllStaff();
+            Patients = await PatientDatabase.GetAllPatients();
+            Appointments = await AppointmentDatabase.GetAllAppointments();
+        }
+        catch(SqlException ex)
+        {
+            Logger.LogError("Error loading information from server", ex);
+        }
     }
 
     private void BackToAppointments()
@@ -166,6 +187,13 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
             await JsRuntime.InvokeVoidAsync("alert", $"Please select a valid Staff Member");
             return;
         }
+
+        if (_appointmentModel.AppointmentDateTime < DateTime.Now)
+        {
+            await JsRuntime.InvokeVoidAsync("alert", $"Appointment cannot be made in the past");
+            return;
+        }
+
         _appointmentModel.PatientId = patientId;
         _appointmentModel.StaffId = staffId;
         _appointmentModel.AppointmentDuration = int.Parse(Duration);
@@ -178,20 +206,26 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
             foreach (var appointment in currentAppointments)
             {
                 var endTime = appointment.AppointmentDateTime.AddMinutes(appointment.AppointmentDuration);
-                var isStartDateTimeValid = DateTimeRangeCheck(_appointmentModel.AppointmentDateTime, appointment.AppointmentDateTime, endTime);
-                var isAppointmentDurationValid = DateTimeRangeCheck(scheduledAppointmentEndTime, appointment.AppointmentDateTime, endTime);
-                if (isStartDateTimeValid || isAppointmentDurationValid)
+                var isStartDateTimeInvalid = DateTimeRangeCheck(_appointmentModel.AppointmentDateTime, appointment.AppointmentDateTime, endTime);
+                var isAppointmentDurationInvalid = DateTimeRangeCheck(scheduledAppointmentEndTime, appointment.AppointmentDateTime, endTime);
+
+                if (isStartDateTimeInvalid || isAppointmentDurationInvalid)
                 {
                     await JsRuntime.InvokeVoidAsync("alert", $"This appointment conflicts with another appointment.");
                     return;
                 }
             }
         }
-
-        await AppointmentDatabase.InsertAppointment(_appointmentModel);
+        try
+        {
+            Logger.LogInformation("Inserting Appointment ", _appointmentModel);
+            await AppointmentDatabase.InsertAppointment(_appointmentModel);
+        }
+        catch (SqlException ex)
+        {
+            Logger.LogError("Error writing to database", ex);
+        }
         BackToAppointments();
-        //TODO - ADD VALIDATION CALL TO CHECK IF APPOINTMENT IS VALID TO MAKE AT TIME OF CREATION
-        //I.E THE APPOINTMENT WILL NOT OVERLAP WITH ANY OF THE STAFF OR PATIENTS OTHER APPOINTMENTS
     }
 
     private bool DateTimeRangeCheck(DateTime proposedAppointment, DateTime startTime, DateTime endTime)
@@ -202,6 +236,7 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
 #line default
 #line hidden
 #nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private ILogger<AppointmentAdd> Logger { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private IJSRuntime JsRuntime { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private IAppointmentData AppointmentDatabase { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private IPatientData PatientDatabase { get; set; }

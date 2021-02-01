@@ -103,6 +103,20 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 14 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\_Imports.razor"
+using Microsoft.Extensions.Logging;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 15 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\_Imports.razor"
+using System.Data.SqlClient;
+
+#line default
+#line hidden
+#nullable disable
     [Microsoft.AspNetCore.Components.RouteAttribute("/AppointmentData/AppointmentEdit/{AppointmentId}")]
     public partial class AppointmentEdit : Microsoft.AspNetCore.Components.ComponentBase
     {
@@ -112,7 +126,7 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 45 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\AppointmentData\AppointmentEdit.razor"
+#line 47 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\AppointmentData\AppointmentEdit.razor"
        
     [Parameter]
     public string AppointmentId { get; set; }
@@ -135,9 +149,9 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
             var data = await AppointmentDatabase.GetAppointment(appointmentId);
             _appointmentModel = data.FirstOrDefault();
         }
-        catch (ArgumentNullException)
+        catch (SqlException ex)
         {
-
+            Logger.LogError("Error loading information from server", ex);
         }
 
         if (_appointmentModel != null)
@@ -174,6 +188,13 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
             await JsRuntime.InvokeVoidAsync("alert", $"Please select a valid Staff Member");
             return;
         }
+
+        if (_appointmentModel.AppointmentDateTime < DateTime.Now)
+        {
+            await JsRuntime.InvokeVoidAsync("alert", $"Appointment cannot be made in the past");
+            return;
+        }
+
         _appointmentModel.PatientId = patientId;
         _appointmentModel.StaffId = staffId;
         _appointmentModel.AppointmentDuration = int.Parse(Duration);
@@ -199,8 +220,15 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
                 }
             }
         }
-
-        await AppointmentDatabase.UpdateAppointment(_appointmentModel);
+        try
+        {
+            Logger.LogInformation("Saving new Appointment ", _appointmentModel);
+            await AppointmentDatabase.UpdateAppointment(_appointmentModel);
+        }
+        catch (SqlException ex)
+        {
+            Logger.LogError("Error writing to database", ex);
+        }
         _appointmentModel = new AppointmentModel();
         BackToAppointments();
     }
@@ -218,6 +246,7 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
 #line default
 #line hidden
 #nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private ILogger<AppointmentEdit> Logger { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private IJSRuntime JsRuntime { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private IAppointmentData AppointmentDatabase { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private IPatientData PatientDatabase { get; set; }

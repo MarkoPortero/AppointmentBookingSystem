@@ -149,3 +149,5 @@ C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\bi
 C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\bin\Debug\netcoreapp3.1\Microsoft.JSInterop.dll
 C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\AppointmentData\AppointmentHistory.razor.g.cs
 C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\obj\Debug\netcoreapp3.1\Razor\Pages\AppointmentData\AppointmentHistory.razor.g.cs
+C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Logging.dll
+C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\bin\Debug\netcoreapp3.1\System.Diagnostics.DiagnosticSource.dll

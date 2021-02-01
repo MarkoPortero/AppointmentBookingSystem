@@ -104,7 +104,21 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
 #line hidden
 #nullable disable
 #nullable restore
-#line 5 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\PatientData\PatientAdd.razor"
+#line 14 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\_Imports.razor"
+using Microsoft.Extensions.Logging;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 15 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\_Imports.razor"
+using System.Data.SqlClient;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 6 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\PatientData\PatientAdd.razor"
            [Authorize(Roles = "Administrator, Receptionist")]
 
 #line default
@@ -119,7 +133,7 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 41 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\PatientData\PatientAdd.razor"
+#line 43 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\PatientData\PatientAdd.razor"
        
     private PatientAddModel _patientAddModel = new PatientAddModel();
 
@@ -134,11 +148,18 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
             Email = _patientAddModel.Email,
             DateOfBirth = _patientAddModel.DateOfBirth.Date
         };
+        try
+        {
+            await Database.InsertPatient(patient);
+            //wipe out patient model
+            _patientAddModel = new PatientAddModel();
+            BackToPatient();
+        }
+        catch (SqlException ex)
+        {
+            Logger.LogError("Error loading information from server", ex);
+        }
 
-        await Database.InsertPatient(patient);
-        //wipe out patient model
-        _patientAddModel = new PatientAddModel();
-        BackToPatient();
     }
 
     private void BackToPatient()
@@ -149,6 +170,7 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
 #line default
 #line hidden
 #nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private ILogger<PatientAdd> Logger { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager NavigationManager { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private IPatientData Database { get; set; }
     }

@@ -4,9 +4,10 @@
 @inject IJSRuntime JsRuntime
 @inject NavigationManager NavigationManager
 @inject Blazored.SessionStorage.ISessionStorageService SessionStorage
+@inject ILogger<Appointments> Logger;
+@attribute [Authorize]
 
 <h1>Appointments</h1>
-@attribute [Authorize]
 
 <AuthorizeView roles="Administrator, Receptionist">
     <h4>Add new appointment</h4>
@@ -62,16 +63,24 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        var role = await SessionStorage.GetItemAsync<string>("role");
-        if (role == "Medical Practitioner")
+        try
         {
-            var id = await SessionStorage.GetItemAsync<string>("userId");
-            _appointments = await AppointmentDatabase.GetAllAppointmentsForStaffMemberFromCredentials(int.Parse(id));
+            var role = await SessionStorage.GetItemAsync<string>("role");
+            if (role == "Medical Practitioner")
+            {
+                var id = await SessionStorage.GetItemAsync<string>("userId");
+                _appointments = await AppointmentDatabase.GetAllAppointmentsForStaffMemberFromCredentials(int.Parse(id));
+            }
+            else
+            {
+                _appointments = await AppointmentDatabase.GetAllAppointments();
+            }
         }
-        else
+        catch (SqlException ex)
         {
-            _appointments = await AppointmentDatabase.GetAllAppointments();
+            Logger.LogError("Error loading information from server", ex);
         }
+
     }
 
     private void EditAppointment(int appointmentId)

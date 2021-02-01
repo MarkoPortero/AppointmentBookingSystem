@@ -5,6 +5,7 @@
 @inject IUserCredentialsData CredentialsDatabase
 @inject IUserRoleData UserRoleDatabase
 @inject IJSRuntime JsRuntime
+@inject ILogger<Staff> Logger;
 
 <h1>Staff</h1>
 
@@ -58,9 +59,16 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        _staff = await StaffDatabase.GetAllStaff();
-        _roles = await UserRoleDatabase.GetAllUserRoles();
-        _credentials = await CredentialsDatabase.GetAllCredentials();
+        try
+        {
+            _staff = await StaffDatabase.GetAllStaff();
+            _roles = await UserRoleDatabase.GetAllUserRoles();
+            _credentials = await CredentialsDatabase.GetAllCredentials();
+        }
+        catch (SqlException ex)
+        {
+            Logger.LogError("Error loading information from server", ex);
+        }
 
         _staffView = new List<StaffViewModel>();
         foreach (var staff in _staff)
@@ -78,8 +86,15 @@ else
     {
         if (!await JsRuntime.InvokeAsync<bool>("confirm", $"Are you sure you want to delete staff member '{staff.FirstName} {staff.LastName}'?"))
             return;
-        await StaffDatabase.DeleteStaff(staff.Id);
-        _staffView.Remove(staff);
+        try
+        {
+            await StaffDatabase.DeleteStaff(staff.Id);
+            _staffView.Remove(staff);
+        }
+        catch (SqlException ex)
+        {
+            Logger.LogError("Error loading information from server"+ex);
+        }
     }
 
     private StaffViewModel MapStaffViewModel(StaffModel staff)

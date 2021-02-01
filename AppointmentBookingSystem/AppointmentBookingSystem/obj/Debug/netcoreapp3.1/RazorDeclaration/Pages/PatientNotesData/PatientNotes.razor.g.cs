@@ -104,6 +104,20 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
 #line hidden
 #nullable disable
 #nullable restore
+#line 14 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\_Imports.razor"
+using Microsoft.Extensions.Logging;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 15 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\_Imports.razor"
+using System.Data.SqlClient;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
 #line 2 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\PatientNotesData\PatientNotes.razor"
            [Authorize(Roles = "Medical Practitioner")]
 
@@ -119,7 +133,7 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 20 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\PatientNotesData\PatientNotes.razor"
+#line 21 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\PatientNotesData\PatientNotes.razor"
  
     [Parameter]
     public string AppointmentId { get; set; }
@@ -129,13 +143,23 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
     public string StaffId { get; set; }
 
     public PatientNotesModel PatientNotesModel = new PatientNotesModel();
+    private List<PatientNotesModel> data;
+    private List<StaffModel> staff;
 
     protected override async Task OnInitializedAsync()
     {
         Task.WaitAll();
         var appointmentId = int.Parse(AppointmentId);
-        var data = await PatientNotesDatabase.GetPatientNotes(appointmentId);
-        var staff = await StaffDatabase.GetStaffFromCredentials(int.Parse(StaffId));
+
+        try
+        {
+            data = await PatientNotesDatabase.GetPatientNotes(appointmentId);
+            staff = await StaffDatabase.GetStaffFromCredentials(int.Parse(StaffId));
+        }
+        catch (SqlException ex)
+        {
+            Logger.LogError("Error loading information from server", ex);
+        }
 
         if (data.Any())
         {
@@ -155,7 +179,14 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
 
     private async Task SavePatientNotes()
     {
-        await PatientNotesDatabase.UpsertPatientNotes(PatientNotesModel);
+        try
+        {
+            await PatientNotesDatabase.UpsertPatientNotes(PatientNotesModel);
+        }
+        catch (SqlException ex)
+        {
+            Logger.LogError("Error loading information from server", ex);
+        }
     }
 
     private void NavigateToPatientHistory()
@@ -168,6 +199,7 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
 #line default
 #line hidden
 #nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private ILogger<PatientNotes> Logger { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private IStaffData StaffDatabase { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private IPatientNotesData PatientNotesDatabase { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager NavigationManager { get; set; }

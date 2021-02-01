@@ -2,7 +2,9 @@
 
 @inject NavigationManager NavigationManager
 @inject IPatientData Database
+@inject ILogger<PatientEdit> Logger;
 @attribute [Authorize(Roles = "Administrator, Receptionist")]
+
 @if (Patient is null)
 {
     <p><em>Loading Patient...</em></p>
@@ -48,11 +50,19 @@ else
     public string PatientId { get; set; }
     private PatientModel Patient { get; set; }
     private PatientAddModel _patientEditModel = new PatientAddModel();
+    private List<PatientModel> data;
 
     protected override async Task OnInitializedAsync()
     {
         var patientId = int.Parse(PatientId);
-        var data = await Database.GetPatient(patientId);
+        try
+        {
+            data = await Database.GetPatient(patientId);
+        }
+        catch (SqlException ex)
+        {
+            Logger.LogError("Error loading information from server", ex);
+        }
         Patient = data.FirstOrDefault();
         MapEditModel();
     }
@@ -78,11 +88,16 @@ else
             Email = _patientEditModel.Email,
             DateOfBirth = _patientEditModel.DateOfBirth.Date
         };
-
-        await Database.UpdatePatient(patient);
-        //wipe out patient model
-        _patientEditModel = new PatientAddModel();
-        BackToPatient();
+        try
+        {
+            await Database.UpdatePatient(patient); 
+            _patientEditModel = new PatientAddModel();
+            BackToPatient();
+        }
+        catch (SqlException ex)
+        {
+            Logger.LogError("Error loading information from server", ex);
+        }
     }
 
     private void BackToPatient()

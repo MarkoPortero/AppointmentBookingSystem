@@ -3,6 +3,7 @@
 @inject NavigationManager NavigationManager
 @inject IPatientNotesData PatientNotesDatabase
 @inject IStaffData StaffDatabase
+@inject ILogger<PatientNotes> Logger;
 
 <EditForm Model="PatientNotesModel" OnValidSubmit="@SavePatientNotes">
     <div class="form-group">
@@ -26,13 +27,23 @@
     public string StaffId { get; set; }
 
     public PatientNotesModel PatientNotesModel = new PatientNotesModel();
+    private List<PatientNotesModel> data;
+    private List<StaffModel> staff;
 
     protected override async Task OnInitializedAsync()
     {
         Task.WaitAll();
         var appointmentId = int.Parse(AppointmentId);
-        var data = await PatientNotesDatabase.GetPatientNotes(appointmentId);
-        var staff = await StaffDatabase.GetStaffFromCredentials(int.Parse(StaffId));
+
+        try
+        {
+            data = await PatientNotesDatabase.GetPatientNotes(appointmentId);
+            staff = await StaffDatabase.GetStaffFromCredentials(int.Parse(StaffId));
+        }
+        catch (SqlException ex)
+        {
+            Logger.LogError("Error loading information from server", ex);
+        }
 
         if (data.Any())
         {
@@ -52,7 +63,14 @@
 
     private async Task SavePatientNotes()
     {
-        await PatientNotesDatabase.UpsertPatientNotes(PatientNotesModel);
+        try
+        {
+            await PatientNotesDatabase.UpsertPatientNotes(PatientNotesModel);
+        }
+        catch (SqlException ex)
+        {
+            Logger.LogError("Error loading information from server", ex);
+        }
     }
 
     private void NavigateToPatientHistory()

@@ -72,6 +72,9 @@
         public Task DeleteStaff(int staffId)
         {
             var query = @"DELETE
+                          FROM MedPractice.patientNotes
+                          WHERE MedPractice.patientNotes.staffId = @staffId
+                          DELETE
                           FROM MedPractice.appointment
                           WHERE MedPractice.appointment.staffId = @staffId;
                           DELETE

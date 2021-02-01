@@ -120,6 +120,10 @@
             "Blazored.SessionStorage": {
               "target": "Package",
               "version": "[1.0.13, )"
+            },
+            "Microsoft.Extensions.Logging": {
+              "target": "Package",
+              "version": "[5.0.0, )"
             }
           },
           "imports": [
@@ -188,6 +192,10 @@
               "target": "Package",
               "version": "[16.5.0, )"
             },
+            "Moq": {
+              "target": "Package",
+              "version": "[4.16.0, )"
+            },
             "NUnit": {
               "target": "Package",
               "version": "[3.12.0, )"
@@ -195,6 +203,14 @@
             "NUnit3TestAdapter": {
               "target": "Package",
               "version": "[3.16.1, )"
+            },
+            "bunit.core": {
+              "target": "Package",
+              "version": "[1.0.0-preview-01, )"
+            },
+            "bunit.web": {
+              "target": "Package",
+              "version": "[1.0.0-preview-01, )"
             }
           },
           "imports": [

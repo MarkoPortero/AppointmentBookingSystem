@@ -104,7 +104,21 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
 #line hidden
 #nullable disable
 #nullable restore
-#line 2 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\AppointmentData\AppointmentHistory.razor"
+#line 14 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\_Imports.razor"
+using Microsoft.Extensions.Logging;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 15 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\_Imports.razor"
+using System.Data.SqlClient;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 3 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\AppointmentData\AppointmentHistory.razor"
            [Authorize(Roles = "Medical Practitioner")]
 
 #line default
@@ -119,7 +133,7 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 64 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\AppointmentData\AppointmentHistory.razor"
+#line 67 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\AppointmentData\AppointmentHistory.razor"
        
     private AppointmentModel _appointment = new AppointmentModel();
     private List<AppointmentModel> _appointments;
@@ -127,35 +141,48 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
     private string SelectedPatient { get; set; }
     private bool PatientSelected { get; set; } = false;
     private int PatientId { get; set; }
-    private int StaffId;
+    private int _staffId;
 
     protected override async Task OnInitializedAsync()
     {
-        Patients = await PatientDatabase.GetAllPatients();
-        var id = await SessionStorage.GetItemAsync<string>("userId");
-        StaffId = int.Parse(id);
-        _appointments = await AppointmentDatabase.GetAllAppointmentsForStaffMemberFromCredentials(StaffId);
+        try
+        {
+            Patients = await PatientDatabase.GetAllPatients();
+            var id = await SessionStorage.GetItemAsync<string>("userId");
+            _staffId = int.Parse(id);
+            _appointments = await AppointmentDatabase.GetAllAppointmentsForStaffMemberFromCredentials(_staffId);
+        }
+        catch (SqlException ex)
+        {
+            Logger.LogError("Error loading information from server", ex);
+        }
     }
 
-    private void GetAppointmentHistory()
+    private async Task GetAppointmentHistory()
     {
         if (SelectedPatient is null)
         {
             return;
         }
         string[] patientDetails = SelectedPatient.Split(' ');
-        PatientId = int.Parse(patientDetails[0]);
+        if (!int.TryParse(patientDetails[0], out var parsedPatientId))
+        {
+            await JsRuntime.InvokeVoidAsync("alert", $"Please select a patient");
+        }
+        PatientId = parsedPatientId;
         PatientSelected = true;
     }
 
     private void ViewNotes(int appointmentId, int patientId)
     {
-        NavigationManager.NavigateTo($"/PatientNotes/{appointmentId}/{patientId}/{StaffId}");
+        NavigationManager.NavigateTo($"/PatientNotes/{appointmentId}/{patientId}/{_staffId}");
     }
 
 #line default
 #line hidden
 #nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IJSRuntime JsRuntime { get; set; }
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private ILogger<AppointmentHistory> Logger { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager NavigationManager { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private Blazored.SessionStorage.ISessionStorageService SessionStorage { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private IAppointmentData AppointmentDatabase { get; set; }

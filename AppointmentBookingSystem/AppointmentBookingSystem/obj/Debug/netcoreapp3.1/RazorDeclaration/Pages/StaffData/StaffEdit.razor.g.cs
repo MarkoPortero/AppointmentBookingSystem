@@ -104,6 +104,20 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
 #line hidden
 #nullable disable
 #nullable restore
+#line 14 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\_Imports.razor"
+using Microsoft.Extensions.Logging;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 15 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\_Imports.razor"
+using System.Data.SqlClient;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
 #line 2 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\StaffData\StaffEdit.razor"
            [Authorize(Roles = "Administrator")]
 
@@ -119,7 +133,7 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 52 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\StaffData\StaffEdit.razor"
+#line 53 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\StaffData\StaffEdit.razor"
        
     [Parameter]
     public string StaffId { get; set; }
@@ -128,11 +142,19 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
     private UserCredentialsModel Credentials { get; set; }
     private UserRolesModel UserRole { get; set; }
     private List<UserRolesModel> UserRoles { get; set; }
+    private List<StaffModel> _staffData;
 
     protected override async Task OnInitializedAsync()
     {
-        var staffData = await StaffDatabase.GetStaff(int.Parse(StaffId));
-        StaffMember = staffData.FirstOrDefault();
+        try
+        {
+            _staffData = await StaffDatabase.GetStaff(int.Parse(StaffId));
+        }
+        catch (SqlException ex)
+        {
+            Logger.LogError("Error loading information from server", ex);
+        }
+        StaffMember = _staffData.FirstOrDefault();
         if (StaffMember != null)
         {
             var credentialData = await CredentialsDatabase.GetCredential(StaffMember.UserId);
@@ -140,12 +162,20 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
         }
         else
         {
+            Logger.LogError("Staff Member returned as null", nameof(StaffMember));
             throw new ArgumentNullException(nameof(StaffMember));
         }
-        var userRoleData = await UserRoleDatabase.GetUserRole(StaffMember.RoleId);
-        UserRole = userRoleData.FirstOrDefault();
-        UserRoles = await UserRoleDatabase.GetAllUserRoles();
-        StaffViewModel = MapStaffViewModel(StaffMember);
+        try
+        {
+            var userRoleData = await UserRoleDatabase.GetUserRole(StaffMember.RoleId);
+            UserRole = userRoleData.FirstOrDefault();
+            UserRoles = await UserRoleDatabase.GetAllUserRoles();
+            StaffViewModel = MapStaffViewModel(StaffMember);
+        }
+        catch (SqlException ex)
+        {
+            Logger.LogError("Error loading information from server", ex);
+        }
     }
 
     private StaffViewModel MapStaffViewModel(StaffModel staff)
@@ -184,11 +214,18 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
             UserId = StaffMember.UserId
         };
 
-        await CredentialsDatabase.UpdateCredentials(credentials);
-        await StaffDatabase.UpdateStaff(staffMember);
-        //wipe out staff model
-        StaffViewModel = new StaffViewModel();
-        BackToStaff();
+        try
+        {
+            await CredentialsDatabase.UpdateCredentials(credentials);
+            await StaffDatabase.UpdateStaff(staffMember);
+            //wipe out staff model
+            StaffViewModel = new StaffViewModel();
+            BackToStaff();
+        }
+        catch (SqlException ex)
+        {
+            Logger.LogError("Error loading information from server", ex);
+        }
     }
 
     private void BackToStaff()
@@ -199,6 +236,7 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
 #line default
 #line hidden
 #nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private ILogger<StaffEdit> Logger { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private IUserRoleData UserRoleDatabase { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private IUserCredentialsData CredentialsDatabase { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private IStaffData StaffDatabase { get; set; }

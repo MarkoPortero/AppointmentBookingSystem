@@ -1,9 +1,12 @@
 ﻿@page "/AppointmentData/AppointmentHistory"
+
 @attribute [Authorize(Roles = "Medical Practitioner")]
 @inject IPatientData PatientDatabase
 @inject IAppointmentData AppointmentDatabase
 @inject Blazored.SessionStorage.ISessionStorageService SessionStorage
 @inject NavigationManager NavigationManager
+@inject ILogger<AppointmentHistory> Logger;
+@inject IJSRuntime JsRuntime
 
 @if (Patients is null)
 {
@@ -68,29 +71,40 @@ else
     private string SelectedPatient { get; set; }
     private bool PatientSelected { get; set; } = false;
     private int PatientId { get; set; }
-    private int StaffId;
+    private int _staffId;
 
     protected override async Task OnInitializedAsync()
     {
-        Patients = await PatientDatabase.GetAllPatients();
-        var id = await SessionStorage.GetItemAsync<string>("userId");
-        StaffId = int.Parse(id);
-        _appointments = await AppointmentDatabase.GetAllAppointmentsForStaffMemberFromCredentials(StaffId);
+        try
+        {
+            Patients = await PatientDatabase.GetAllPatients();
+            var id = await SessionStorage.GetItemAsync<string>("userId");
+            _staffId = int.Parse(id);
+            _appointments = await AppointmentDatabase.GetAllAppointmentsForStaffMemberFromCredentials(_staffId);
+        }
+        catch (SqlException ex)
+        {
+            Logger.LogError("Error loading information from server", ex);
+        }
     }
 
-    private void GetAppointmentHistory()
+    private async Task GetAppointmentHistory()
     {
         if (SelectedPatient is null)
         {
             return;
         }
         string[] patientDetails = SelectedPatient.Split(' ');
-        PatientId = int.Parse(patientDetails[0]);
+        if (!int.TryParse(patientDetails[0], out var parsedPatientId))
+        {
+            await JsRuntime.InvokeVoidAsync("alert", $"Please select a patient");
+        }
+        PatientId = parsedPatientId;
         PatientSelected = true;
     }
 
     private void ViewNotes(int appointmentId, int patientId)
     {
-        NavigationManager.NavigateTo($"/PatientNotes/{appointmentId}/{patientId}/{StaffId}");
+        NavigationManager.NavigateTo($"/PatientNotes/{appointmentId}/{patientId}/{_staffId}");
     }
 }

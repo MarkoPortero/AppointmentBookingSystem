@@ -5,6 +5,7 @@
 @inject IJSRuntime JsRuntime
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject Blazored.SessionStorage.ISessionStorageService SessionStorage
+@inject ILogger<Login> Logger
 
 <h1>Login</h1>
 <EditForm Model="_credentialsModel" OnValidSubmit="@UserLogin">
@@ -26,17 +27,34 @@
     private async Task UserLogin()
     {
         Task.WaitAll();
-        Credentials = await UserCredentialsDatabase.GetCredentialFromLogin(_credentialsModel.UserName, _credentialsModel.Password);
+        try
+        {
+            Credentials = await UserCredentialsDatabase.GetCredentialFromLogin(_credentialsModel.UserName, _credentialsModel.Password);
+        }
+        catch (SqlException ex)
+        {
+            Logger.LogError("Error loading information from server", ex);
+        }
 
         if (Credentials.Any())
         {
-            List<UserRolesModel> role = await UserRoleData.GetUserRoleFromLogin(Credentials.First().Id);
-            ((CustomAuthenticationStateProvider)AuthenticationStateProvider).AuthenticateUser(Credentials.First().Id, _credentialsModel.UserName, role.First().UserRole);
+            try
+            {
+                List<UserRolesModel> role = await UserRoleData.GetUserRoleFromLogin(Credentials.First().Id);
+                ((CustomAuthenticationStateProvider) AuthenticationStateProvider).AuthenticateUser(Credentials.First().Id, _credentialsModel.UserName, role.First().UserRole);
 
-            await SessionStorage.SetItemAsync("userId", Credentials.First().Id.ToString());
-            await SessionStorage.SetItemAsync("userName", _credentialsModel.UserName);
-            await SessionStorage.SetItemAsync("role", role.First().UserRole);
-
+                await SessionStorage.SetItemAsync("userId", Credentials.First().Id.ToString());
+                await SessionStorage.SetItemAsync("userName", _credentialsModel.UserName);
+                await SessionStorage.SetItemAsync("role", role.First().UserRole);
+            }
+            catch (SqlException ex)
+            {
+                Logger.LogError("Error loading information from server" + ex);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError("Caught exception on login", ex);
+            }
             NavigationManager.NavigateTo("/");
             return;
         }

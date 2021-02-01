@@ -1,9 +1,11 @@
 ﻿@page "/AppointmentData/AppointmentAdd"
+
 @inject NavigationManager NavigationManager
 @inject IStaffData StaffDatabase
 @inject IPatientData PatientDatabase
 @inject IAppointmentData AppointmentDatabase
 @inject IJSRuntime JsRuntime
+@inject ILogger<AppointmentAdd> Logger;
 @attribute [Authorize(Roles = "Administrator, Receptionist")]
 
 <h1>Add a new appointment</h1>
@@ -69,9 +71,16 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        StaffMembers = await StaffDatabase.GetAllStaff();
-        Patients = await PatientDatabase.GetAllPatients();
-        Appointments = await AppointmentDatabase.GetAllAppointments();
+        try
+        {
+            StaffMembers = await StaffDatabase.GetAllStaff();
+            Patients = await PatientDatabase.GetAllPatients();
+            Appointments = await AppointmentDatabase.GetAllAppointments();
+        }
+        catch(SqlException ex)
+        {
+            Logger.LogError("Error loading information from server", ex);
+        }
     }
 
     private void BackToAppointments()
@@ -104,6 +113,13 @@ else
             await JsRuntime.InvokeVoidAsync("alert", $"Please select a valid Staff Member");
             return;
         }
+
+        if (_appointmentModel.AppointmentDateTime < DateTime.Now)
+        {
+            await JsRuntime.InvokeVoidAsync("alert", $"Appointment cannot be made in the past");
+            return;
+        }
+
         _appointmentModel.PatientId = patientId;
         _appointmentModel.StaffId = staffId;
         _appointmentModel.AppointmentDuration = int.Parse(Duration);
@@ -116,20 +132,26 @@ else
             foreach (var appointment in currentAppointments)
             {
                 var endTime = appointment.AppointmentDateTime.AddMinutes(appointment.AppointmentDuration);
-                var isStartDateTimeValid = DateTimeRangeCheck(_appointmentModel.AppointmentDateTime, appointment.AppointmentDateTime, endTime);
-                var isAppointmentDurationValid = DateTimeRangeCheck(scheduledAppointmentEndTime, appointment.AppointmentDateTime, endTime);
-                if (isStartDateTimeValid || isAppointmentDurationValid)
+                var isStartDateTimeInvalid = DateTimeRangeCheck(_appointmentModel.AppointmentDateTime, appointment.AppointmentDateTime, endTime);
+                var isAppointmentDurationInvalid = DateTimeRangeCheck(scheduledAppointmentEndTime, appointment.AppointmentDateTime, endTime);
+
+                if (isStartDateTimeInvalid || isAppointmentDurationInvalid)
                 {
                     await JsRuntime.InvokeVoidAsync("alert", $"This appointment conflicts with another appointment.");
                     return;
                 }
             }
         }
-
-        await AppointmentDatabase.InsertAppointment(_appointmentModel);
+        try
+        {
+            Logger.LogInformation("Inserting Appointment ", _appointmentModel);
+            await AppointmentDatabase.InsertAppointment(_appointmentModel);
+        }
+        catch (SqlException ex)
+        {
+            Logger.LogError("Error writing to database", ex);
+        }
         BackToAppointments();
-        //TODO - ADD VALIDATION CALL TO CHECK IF APPOINTMENT IS VALID TO MAKE AT TIME OF CREATION
-        //I.E THE APPOINTMENT WILL NOT OVERLAP WITH ANY OF THE STAFF OR PATIENTS OTHER APPOINTMENTS
     }
 
     private bool DateTimeRangeCheck(DateTime proposedAppointment, DateTime startTime, DateTime endTime)

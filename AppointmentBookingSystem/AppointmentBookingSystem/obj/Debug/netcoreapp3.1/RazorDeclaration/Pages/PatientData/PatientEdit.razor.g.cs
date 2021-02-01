@@ -104,7 +104,21 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
 #line hidden
 #nullable disable
 #nullable restore
-#line 5 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\PatientData\PatientEdit.razor"
+#line 14 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\_Imports.razor"
+using Microsoft.Extensions.Logging;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 15 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\_Imports.razor"
+using System.Data.SqlClient;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 6 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\PatientData\PatientEdit.razor"
            [Authorize(Roles = "Administrator, Receptionist")]
 
 #line default
@@ -119,17 +133,25 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 46 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\PatientData\PatientEdit.razor"
+#line 48 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\PatientData\PatientEdit.razor"
        
     [Parameter]
     public string PatientId { get; set; }
     private PatientModel Patient { get; set; }
     private PatientAddModel _patientEditModel = new PatientAddModel();
+    private List<PatientModel> data;
 
     protected override async Task OnInitializedAsync()
     {
         var patientId = int.Parse(PatientId);
-        var data = await Database.GetPatient(patientId);
+        try
+        {
+            data = await Database.GetPatient(patientId);
+        }
+        catch (SqlException ex)
+        {
+            Logger.LogError("Error loading information from server", ex);
+        }
         Patient = data.FirstOrDefault();
         MapEditModel();
     }
@@ -155,11 +177,16 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
             Email = _patientEditModel.Email,
             DateOfBirth = _patientEditModel.DateOfBirth.Date
         };
-
-        await Database.UpdatePatient(patient);
-        //wipe out patient model
-        _patientEditModel = new PatientAddModel();
-        BackToPatient();
+        try
+        {
+            await Database.UpdatePatient(patient); 
+            _patientEditModel = new PatientAddModel();
+            BackToPatient();
+        }
+        catch (SqlException ex)
+        {
+            Logger.LogError("Error loading information from server", ex);
+        }
     }
 
     private void BackToPatient()
@@ -171,6 +198,7 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
 #line default
 #line hidden
 #nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private ILogger<PatientEdit> Logger { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private IPatientData Database { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager NavigationManager { get; set; }
     }

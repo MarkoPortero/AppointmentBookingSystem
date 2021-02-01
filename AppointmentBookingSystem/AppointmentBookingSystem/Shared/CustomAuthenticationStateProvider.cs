@@ -1,16 +1,20 @@
-﻿namespace AppointmentBookingSystem
+﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Configuration;
+
+namespace AppointmentBookingSystem
 {
     using Blazored.SessionStorage;
     using Microsoft.AspNetCore.Components.Authorization;
     using System.Threading.Tasks;
     using System.Security.Claims;
-
+    
     public class CustomAuthenticationStateProvider : AuthenticationStateProvider
     {
         private ISessionStorageService _sessionStorageService;
-
+        private ILogger _logger = new Logger<CustomAuthenticationStateProvider>(new LoggerFactory());
         public CustomAuthenticationStateProvider(ISessionStorageService sessionStorageService)
         {
+            // Used to save credentials to the session storage for refreshing pages
             _sessionStorageService = sessionStorageService;
         }
 
@@ -20,10 +24,12 @@
             var id = await _sessionStorageService.GetItemAsync<string>("userId");
             var userName = await _sessionStorageService.GetItemAsync<string>("userName");
             var role = await _sessionStorageService.GetItemAsync<string>("role");
+
             ClaimsIdentity identity;
             if (userName != null)
             {
-                identity = new ClaimsIdentity(new[]
+                _logger.LogInformation("Found identity in Session Storage", userName);
+                    identity = new ClaimsIdentity(new[]
                 {
                     new Claim(ClaimTypes.NameIdentifier, id),
                     new Claim(ClaimTypes.Name, userName),
@@ -53,6 +59,7 @@
 
         public void LogoutUser()
         {
+            _logger.LogInformation($"User logged out");
             _sessionStorageService.RemoveItemAsync("role");
             _sessionStorageService.RemoveItemAsync("userName");
             _sessionStorageService.RemoveItemAsync("userId");

@@ -104,6 +104,20 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
 #line hidden
 #nullable disable
 #nullable restore
+#line 14 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\_Imports.razor"
+using Microsoft.Extensions.Logging;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 15 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\_Imports.razor"
+using System.Data.SqlClient;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
 #line 2 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\StaffData\Staff.razor"
            [Authorize(Roles = "Administrator")]
 
@@ -119,7 +133,7 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 53 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\StaffData\Staff.razor"
+#line 54 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\StaffData\Staff.razor"
        
     private List<StaffViewModel> _staffView;
     private List<StaffModel> _staff;
@@ -128,9 +142,16 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
 
     protected override async Task OnInitializedAsync()
     {
-        _staff = await StaffDatabase.GetAllStaff();
-        _roles = await UserRoleDatabase.GetAllUserRoles();
-        _credentials = await CredentialsDatabase.GetAllCredentials();
+        try
+        {
+            _staff = await StaffDatabase.GetAllStaff();
+            _roles = await UserRoleDatabase.GetAllUserRoles();
+            _credentials = await CredentialsDatabase.GetAllCredentials();
+        }
+        catch (SqlException ex)
+        {
+            Logger.LogError("Error loading information from server", ex);
+        }
 
         _staffView = new List<StaffViewModel>();
         foreach (var staff in _staff)
@@ -148,8 +169,15 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
     {
         if (!await JsRuntime.InvokeAsync<bool>("confirm", $"Are you sure you want to delete staff member '{staff.FirstName} {staff.LastName}'?"))
             return;
-        await StaffDatabase.DeleteStaff(staff.Id);
-        _staffView.Remove(staff);
+        try
+        {
+            await StaffDatabase.DeleteStaff(staff.Id);
+            _staffView.Remove(staff);
+        }
+        catch (SqlException ex)
+        {
+            Logger.LogError("Error loading information from server"+ex);
+        }
     }
 
     private StaffViewModel MapStaffViewModel(StaffModel staff)
@@ -169,6 +197,7 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
 #line default
 #line hidden
 #nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private ILogger<Staff> Logger { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private IJSRuntime JsRuntime { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private IUserRoleData UserRoleDatabase { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private IUserCredentialsData CredentialsDatabase { get; set; }

@@ -120,6 +120,10 @@
             "Blazored.SessionStorage": {
               "target": "Package",
               "version": "[1.0.13, )"
+            },
+            "Microsoft.Extensions.Logging": {
+              "target": "Package",
+              "version": "[5.0.0, )"
             }
           },
           "imports": [

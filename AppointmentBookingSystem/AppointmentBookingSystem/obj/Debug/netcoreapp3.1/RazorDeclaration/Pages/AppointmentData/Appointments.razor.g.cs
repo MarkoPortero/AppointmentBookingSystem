@@ -104,7 +104,21 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
 #line hidden
 #nullable disable
 #nullable restore
-#line 9 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\AppointmentData\Appointments.razor"
+#line 14 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\_Imports.razor"
+using Microsoft.Extensions.Logging;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 15 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\_Imports.razor"
+using System.Data.SqlClient;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 8 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\AppointmentData\Appointments.razor"
            [Authorize]
 
 #line default
@@ -119,22 +133,30 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 60 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\AppointmentData\Appointments.razor"
+#line 61 "C:\Users\MarkP\source\repos\AppointmentBookingSystem\AppointmentBookingSystem\Pages\AppointmentData\Appointments.razor"
        
     private List<AppointmentModel> _appointments;
 
     protected override async Task OnInitializedAsync()
     {
-        var role = await SessionStorage.GetItemAsync<string>("role");
-        if (role == "Medical Practitioner")
+        try
         {
-            var id = await SessionStorage.GetItemAsync<string>("userId");
-            _appointments = await AppointmentDatabase.GetAllAppointmentsForStaffMemberFromCredentials(int.Parse(id));
+            var role = await SessionStorage.GetItemAsync<string>("role");
+            if (role == "Medical Practitioner")
+            {
+                var id = await SessionStorage.GetItemAsync<string>("userId");
+                _appointments = await AppointmentDatabase.GetAllAppointmentsForStaffMemberFromCredentials(int.Parse(id));
+            }
+            else
+            {
+                _appointments = await AppointmentDatabase.GetAllAppointments();
+            }
         }
-        else
+        catch (SqlException ex)
         {
-            _appointments = await AppointmentDatabase.GetAllAppointments();
+            Logger.LogError("Error loading information from server", ex);
         }
+
     }
 
     private void EditAppointment(int appointmentId)
@@ -154,6 +176,7 @@ using AppointmentBookingSystemDAL.DataAccess.Interfaces;
 #line default
 #line hidden
 #nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private ILogger<Appointments> Logger { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private Blazored.SessionStorage.ISessionStorageService SessionStorage { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager NavigationManager { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private IJSRuntime JsRuntime { get; set; }
